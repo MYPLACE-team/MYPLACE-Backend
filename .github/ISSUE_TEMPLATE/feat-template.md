@@ -9,9 +9,7 @@ assignees: ''
 
 ## 제목
 
-### 구현 내용
+###  To do
 - [ ] one
 - [ ] two
 
-### To Reviews
-- 전달사항
