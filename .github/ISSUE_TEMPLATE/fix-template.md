@@ -11,7 +11,7 @@ assignees: ''
 
 ### 구현 내용
 - [ ] one
-- [ ]two
+- [ ] two
 
 ### To Reviews
 전달사항
