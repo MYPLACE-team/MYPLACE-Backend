@@ -3,6 +3,12 @@ export const status = {
   SUCCESS: { status: 200, isSuccess: true, code: 2000, message: '성공!!' },
 
   //auth
+  KAKAO_LOGIN_SUCCESS: {
+    status: 200,
+    isSuccess: true,
+    code: 'AUTH2100',
+    message: '카카오 로그인 완료!',
+  },
   REGISTER_SUCCESS: {
     status: 200,
     isSuccess: true,
