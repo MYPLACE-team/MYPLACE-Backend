@@ -4,7 +4,7 @@ export const loginResponseDTO = (user, access_token) => {
   return {
     userId: user.id,
     email: user.email,
-    nickname: user.username,
+    username: user.username,
     profile_img: user.profile_img,
     access_Token: access_token,
   }

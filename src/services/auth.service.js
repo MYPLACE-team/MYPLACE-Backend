@@ -13,13 +13,36 @@ export const tokenSign = async (user) => {
     username: user.username,
     email: user.email,
   }
+  console.log(user)
   const result = jwt.sign(payload, jwtConfig.secretKey, jwtConfig.options)
   return result
 }
+
+//토큰 인증
+export const tokenVerify = async (token) => {
+  let decoded
+  try {
+    // verify를 통해 값 decode!
+    decoded = jwt.verify(token, jwtConfig.secretKey)
+  } catch (err) {
+    if (err.message === 'jwt expired') {
+      console.log('expired token')
+      return 'TOKEN_EXPIRED'
+    } else if (err.message === 'invalid token') {
+      console.log('invalid token')
+      console.log('TOKEN_INVALID')
+      return 'TOKEN_INVALID'
+    } else {
+      console.log(err.message)
+      return err.message
+    }
+  }
+  return decoded
+}
+
 export const kakaoLogin = async (headers, body) => {
   headers = headers['authorization']
   const kakaoToken = headers.split(' ')[1]
-
   const authInfo = await Axios.post(
     'https://kapi.kakao.com/v2/user/me',
     {},
@@ -51,7 +74,7 @@ export const kakaoLogin = async (headers, body) => {
       provider,
       kakaoId,
     )
-    return loginResponseDTO(new_user, await tokenSign(user))
+    return loginResponseDTO(new_user, await tokenSign(user[0]))
   }
-  return loginResponseDTO(user, await tokenSign(user))
+  return loginResponseDTO(user, await tokenSign(user[0]))
 }
