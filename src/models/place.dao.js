@@ -8,6 +8,7 @@ import {
   insertHashtag,
   insertPlaceHashtag,
   insertPlaceImage,
+  selectAllPlace
 } from './place.sql'
 
 export const addPlace = async (
@@ -86,5 +87,56 @@ export const addPlace = async (
     }
 
     throw new BaseError(status.PARAMETER_IS_WRONG)
+  }
+}
+
+export const getPreferencePlacesList = async (
+  user_id, 
+  category, 
+  sort, 
+  visit
+  ) => {
+  let query = selectAllPlace;
+  let visitCondition = '';
+  let categoryCondition = '';
+  let sortCondition = '';
+
+  // 가본 장소, 안가본 장소 조건
+  if (visit === 3001){
+    visitCondition = ' AND user_place.is_visited = true'
+  }
+
+  if (visit === 3002){
+    visitCondition = ' AND user_place.is_visited = false'
+  }
+
+  // 카테고리 조건
+  if (category.length > 0){
+    const categories = category.join(',');
+    categoryCondition = ` AND place.category IN (${categories})`;
+  }
+
+  // 정렬 조건
+  if (sort === 2000){
+    sortCondition = ' ORDER BY place.name ASC';
+  }
+
+  if (sort === 2001){
+    sortCondtion = ' ORDER BY place.created_at ASC';
+  }
+
+  query += visitCondition;
+  query += categoryCondition;
+  query += sortCondition;
+
+  try{
+    const conn = await pool.getConnection();
+    const [placeList] = await pool.query(query, [user_id]);
+
+    conn.release();
+    return placeList;
+  } catch (err){
+    console.log('getPreferencePlacesList');
+    return BaseError(status.PARAMETER_IS_WRONG);
   }
 }
