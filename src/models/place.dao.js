@@ -96,10 +96,11 @@ export const getPreferencePlacesList = async (
   sort, 
   visit
   ) => {
-  let query = selectAllPlace;
+  let queryString = selectAllPlace;
   let visitCondition = '';
   let categoryCondition = '';
   let sortCondition = '';
+  console.log(user_id);
 
   // 가본 장소, 안가본 장소 조건
   if (visit === 3001){
@@ -113,7 +114,7 @@ export const getPreferencePlacesList = async (
   // 카테고리 조건
   if (category.length > 0){
     const categories = category.join(',');
-    categoryCondition = ` AND place.category IN (${categories})`;
+    categoryCondition = ` AND place.category_id IN (${categories})`;
   }
 
   // 정렬 조건
@@ -125,18 +126,19 @@ export const getPreferencePlacesList = async (
     sortCondtion = ' ORDER BY place.created_at ASC';
   }
 
-  query += visitCondition;
-  query += categoryCondition;
-  query += sortCondition;
+  queryString += visitCondition;
+  queryString += categoryCondition;
+  queryString += sortCondition;
 
+  console.log(queryString);
   try{
     const conn = await pool.getConnection();
-    const [placeList] = await pool.query(query, [user_id]);
-
+    const placeList = await pool.query(queryString, user_id);
+    console.log(placeList);
     conn.release();
     return placeList;
   } catch (err){
-    console.log('getPreferencePlacesList');
-    return BaseError(status.PARAMETER_IS_WRONG);
+    console.error(err);
+    throw new BaseError(status.PARAMETER_IS_WRONG);
   }
 }

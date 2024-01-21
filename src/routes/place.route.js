@@ -4,4 +4,4 @@ import { addPlaceController, showPreferencePlacesController } from '../controlle
 export const placeRouter = express.Router({ mergeParams: true })
 
 placeRouter.post('/', addPlaceController);
-placeRouter.get('/place/like', showPreferencePlacesController);
+placeRouter.post('/like', showPreferencePlacesController);

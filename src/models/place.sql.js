@@ -22,7 +22,6 @@ export const insertPlaceImage = `
 
 // 유저가 선택한 장소 전체 조회
 export const selectAllPlace = `
-    INSERT user_place.is_visited, place.name, place.address, place.id
-    FROM user_place
-    JOIN place ON user_place.place_id = place.place_id
-    WHERE user_place.user_id = ?` 
+  SELECT place.name, place.address, place.id 
+  FROM user_place JOIN place ON user_place.place_id = place.id 
+  WHERE user_place.user_id = ?`;
