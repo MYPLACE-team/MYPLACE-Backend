@@ -1,6 +1,6 @@
 import { status } from '../../config/response.status.js'
 import { response } from '../../config/response.js'
-import { addPlace } from '../models/place.dao.js'
+import { addPlace, addPreferencePlace } from '../models/place.dao.js'
 import { showPreferencePlacesService } from '../services/place.service.js'
 
 // 장소 등록
@@ -44,14 +44,28 @@ export const addPlaceController = async (req, res) => {
 }
 
 export const showPreferencePlacesController = async (req, res) => {
-  console.log("유저가 관심장소 조회를 요청하였습니다");
-  try{
-    const placeList = await showPreferencePlacesService(req.body);
-    
-    res.send(response(status.SHOW_PREFERENCE_PLACES_SUCCESS, placeList));
-  } catch (err){
-    console.error('Error in showPreferencePlacesController:', err);
-    res.send(response(status.BAD_REQUEST, null));
+  console.log('유저가 관심장소 조회를 요청하였습니다')
+  try {
+    const placeList = await showPreferencePlacesService(req.body)
+
+    res.send(response(status.SHOW_PREFERENCE_PLACES_SUCCESS, placeList))
+  } catch (err) {
+    console.error('Error in showPreferencePlacesController:', err)
+    res.send(response(status.BAD_REQUEST, null))
     // res.status(err.status || 500).json(response(err.code, null));
+  }
+}
+
+// 관심장소 추가
+export const addPreferencePlaceController = async (req, res) => {
+  const { placeId } = req.params
+  const userId = 1 // 임시 변수
+
+  try {
+    const result = await addPreferencePlace(userId, placeId)
+    res.status(201).json(response(status.SUCCESS, { placeId }))
+  } catch (err) {
+    console.error('Error in addPreferencePlaceController:', err)
+    res.status(err.status || 500).json(response(err.code, null))
   }
 }

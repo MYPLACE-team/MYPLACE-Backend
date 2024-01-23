@@ -24,4 +24,8 @@ export const insertPlaceImage = `
 export const selectAllPlace = `
   SELECT place.name, place.address, place.id 
   FROM user_place JOIN place ON user_place.place_id = place.id 
-  WHERE user_place.user_id = ?`;
+  WHERE user_place.user_id = ?`
+
+// 관심장소 추가
+export const insertPreferencePlace = `
+    INSERT INTO user_place (user_id, place_id) VALUES (?, ?)`
