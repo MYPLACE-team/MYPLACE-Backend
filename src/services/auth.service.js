@@ -78,3 +78,43 @@ export const kakaoLogin = async (headers, body) => {
   }
   return loginResponseDTO(user, await tokenSign(user[0]))
 }
+
+export const googleLogin = async (headers, body) => {
+  console.log(headers)
+  headers = headers['authorization']
+  const googleToken = headers.split(' ')[1]
+  const authInfo = await Axios.get(
+    'https://www.googleapis.com/oauth2/v2/userinfo',
+    {
+      // Request Header에 Authorization 추가
+      headers: {
+        Authorization: `Bearer ${googleToken}`,
+      },
+    },
+  )
+  console.log(authInfo)
+  const email = authInfo.data.email
+  const googleId = authInfo.data.id
+  const username = body.username
+  const provider = body.provider
+  /*
+  프로필 사진 업로드 기능 추가 예정
+  */
+  const profileImage =
+    'https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_92x30dp.png'
+
+  if (!email || !googleId) throw new BaseError(status.ACCOUNT_INFO_ERROR)
+
+  const user = await getUserByEmail(email)
+  if (user == -1) {
+    const new_user = await addUser(
+      username,
+      email,
+      profileImage,
+      provider,
+      googleId,
+    )
+    return loginResponseDTO(new_user, await tokenSign(user[0]))
+  }
+  return loginResponseDTO(user, await tokenSign(user[0]))
+}
