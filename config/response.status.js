@@ -6,8 +6,14 @@ export const status = {
   KAKAO_LOGIN_SUCCESS: {
     status: 200,
     isSuccess: true,
-    code: 'AUTH2100',
+    code: 'AUTH2001',
     message: '카카오 로그인 완료!',
+  },
+  GOOGLE_LOGIN_SUCCESS: {
+    status: 200,
+    isSuccess: true,
+    code: 'AUTH2001',
+    message: '구글 로그인 완료!',
   },
   REGISTER_SUCCESS: {
     status: 200,

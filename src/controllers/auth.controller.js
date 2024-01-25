@@ -1,4 +1,4 @@
-import { response, loginResponse } from '../../config/response.js'
+import { response } from '../../config/response.js'
 import { status } from '../../config/response.status.js'
 
 import { kakaoLogin, googleLogin } from '../services/auth.service.js'
@@ -7,11 +7,10 @@ import Axios from 'axios'
 
 export const authLogin = async (req, res) => {
   const provider = req.body.provider
-  console.log('|||||||||||||||', provider, '||||||||||||||||')
   if (provider == '0') {
     console.log('카카오 로그인 요청!')
     return res.send(
-      loginResponse(
+      response(
         status.KAKAO_LOGIN_SUCCESS,
         await kakaoLogin(req.headers, req.body),
       ),
@@ -20,7 +19,7 @@ export const authLogin = async (req, res) => {
     console.log('구글 로그인 요청!')
     return res.send(
       response(
-        status.REGISTER_SUCCESS,
+        status.GOOGLE_LOGIN_SUCCESS,
         await googleLogin(req.headers, req.body),
       ),
     )
