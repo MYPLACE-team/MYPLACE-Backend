@@ -10,33 +10,38 @@ import dotenv from 'dotenv'
 dotenv.config()
 
 export const authLogin = async (req, res) => {
-  const provider = req.body.provider
-  if (provider == '0') {
-    console.log('카카오 로그인 요청!')
-    return res.send(
-      response(
-        status.KAKAO_LOGIN_SUCCESS,
-        await kakaoLogin(req.headers, req.body),
-      ),
-    )
-  } else if (provider == '1') {
-    console.log('구글 로그인 요청!')
-    return res.send(
-      response(
-        status.GOOGLE_LOGIN_SUCCESS,
-        await googleLogin(req.headers, req.body),
-      ),
-    )
-  } //else if (provider == 2) {
-  //     console.log('애플 로그인 요청!')
-  //     res.send(
-  //       response(
-  //         status.REGISTER_SUCCESS,
-  //         await appleLogin(req.headers, req.body),
-  //       ),
-  //     )
-  //   }
-  return res.send(response(status.INVAILD_PROVIDER, null))
+  try {
+    const provider = req.body.provider
+    if (provider == '0') {
+      console.log('카카오 로그인 요청!')
+      return res.send(
+        response(
+          status.KAKAO_LOGIN_SUCCESS,
+          await kakaoLogin(req.headers, req.body),
+        ),
+      )
+    } else if (provider == '1') {
+      console.log('구글 로그인 요청!')
+      return res.send(
+        response(
+          status.GOOGLE_LOGIN_SUCCESS,
+          await googleLogin(req.headers, req.body),
+        ),
+      )
+    } //else if (provider == 2) {
+    //     console.log('애플 로그인 요청!')
+    //     res.send(
+    //       response(
+    //         status.REGISTER_SUCCESS,
+    //         await appleLogin(req.headers, req.body),
+    //       ),
+    //     )
+    //   }
+    return res.send(response(status.INVAILD_PROVIDER, null))
+  } catch (err) {
+    console.log('controller Err: ', err)
+    return res.send(response(status.CONTROL_ERROR, null))
+  }
 }
 
 //임시

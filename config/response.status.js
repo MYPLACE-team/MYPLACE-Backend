@@ -39,4 +39,11 @@ export const status = {
     code: 'AUTH4002',
     message: '잘못된 정보입니다!',
   },
+  //ERR
+  CONTROL_ERROR: {
+    status: 400,
+    isSuccess: false,
+    code: 'CTRL4000',
+    message: '잘못된 데이터입니다!',
+  },
 }

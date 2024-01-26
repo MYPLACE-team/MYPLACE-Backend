@@ -21,7 +21,7 @@ export const getUserByEmail = async (email) => {
     conn.release()
     return user
   } catch (err) {
-    console.log('GET USER BY EMAIL')
+    console.log('GET USER BY EMAIL: ', err)
     throw new BaseError(status.PARAMETER_IS_WRONG)
   }
 }
