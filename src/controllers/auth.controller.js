@@ -5,6 +5,10 @@ import { kakaoLogin, googleLogin } from '../services/auth.service.js'
 
 import Axios from 'axios'
 
+//임시
+import dotenv from 'dotenv'
+dotenv.config()
+
 export const authLogin = async (req, res) => {
   const provider = req.body.provider
   if (provider == '0') {
@@ -35,20 +39,17 @@ export const authLogin = async (req, res) => {
   return res.send(response(status.INVAILD_PROVIDER, null))
 }
 
+//임시
 //토큰 발급을 위한 임시 코드
 const GOOGLE_TOKEN_URL = 'https://oauth2.googleapis.com/token'
-const GOOGLE_CLIENT_ID =
-  '748214384463-2i4defab1gab3d16eh6m0iu4ra318dv9.apps.googleusercontent.com'
-const GOOGLE_CLIENT_SECRET = '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'
-const GOOGLE_REDIRECT_URI = 'http://localhost:3000/auth'
 export const authGoogleRedirectTest = async (req, res) => {
   const { code } = req.query
   console.log(`code: ${code}`)
   const resp = await Axios.post(GOOGLE_TOKEN_URL, {
     code,
-    client_id: GOOGLE_CLIENT_ID,
-    client_secret: GOOGLE_CLIENT_SECRET,
-    redirect_uri: GOOGLE_REDIRECT_URI,
+    client_id: process.env.GOOGLE_CLIENT_ID,
+    client_secret: process.env.GOOGLE_CLIENT_SECRET,
+    redirect_uri: process.env.GOOGLE_REDIRECT_URI,
     grant_type: 'authorization_code',
   })
 
