@@ -66,8 +66,11 @@ export const kakaoLogin = async (headers, body) => {
   /*
   프로필 사진 업로드 기능 추가 예정
   */
-  const profileImage =
+  let profileImage =
     'https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_92x30dp.png'
+  if (body.profile_img) {
+    profileImage = body.profile_img
+  }
 
   if (!email || !kakaoId) throw new BaseError(status.ACCOUNT_INFO_ERROR)
 
