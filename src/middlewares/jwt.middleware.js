@@ -7,6 +7,7 @@ import { status } from '../../config/response.status'
 export const tokenSign = async (user) => {
   //현재는 username와 email을 payload로 넣었지만 필요한 값을 넣으면 됨!
   const payload = {
+    id: user.id,
     username: user.username,
     email: user.email,
   }
