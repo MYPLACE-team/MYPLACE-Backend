@@ -11,10 +11,10 @@ export const status = {
   },
 
   BAD_REQUEST: {
-    status: 400, 
-    "isSuccess": false,
-    "code": 4001,
-    "message": "잘못된 요청입니다"
+    status: 400,
+    isSuccess: false,
+    code: 4001,
+    message: '잘못된 요청입니다',
   },
   //auth
   KAKAO_LOGIN_SUCCESS: {
@@ -46,8 +46,6 @@ export const status = {
     status: 200,
     isSuccess: true,
     code: 'PLACE2000',
-    message: '관심 장소 조회가 정상적으로 수행되었습니다'
+    message: '관심 장소 조회가 정상적으로 수행되었습니다',
   },
-
-  
 }
