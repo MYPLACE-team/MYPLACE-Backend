@@ -73,8 +73,18 @@ export const searchPlaceController = async (req, res) => {
   }
 
   try {
-    const result = await searchPlaceService(data)
-    res.status(200).json(response(status.SUCCESS, { result }))
+    const placeList = await searchPlaceService(data)
+
+    const totalNum = placeList.length
+    const hasNext = totalNum > 10 * page ? true : false
+    const currentPages = placeList.slice(10 * (page - 1), 10 * page)
+
+    const result = {
+      totalNum,
+      hasNext,
+      place: currentPages,
+    }
+    res.status(200).json(response(status.SUCCESS, result))
   } catch (err) {
     console.error('Error in searchPlaceController:', err)
     res.send(response(status.BAD_REQUEST, null))
