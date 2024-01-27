@@ -8,6 +8,10 @@ import {
   insertArchiveFolder,
   insertArchiveHashtag,
   insertArchiveImage,
+  deleteArchive,
+  deleteArchiveFolder,
+  deleteArchiveHashtag,
+  deleteArchiveImage,
 } from './archive.sql'
 
 export const addArchive = async (req) => {
@@ -66,7 +70,28 @@ export const addArchive = async (req) => {
 
     conn.release()
     return archiveId
-    return 1
+  } catch (error) {
+    console.log(error)
+    throw new BaseError(status.PARAMETER_IS_WRONG)
+  }
+}
+
+export const removeArchive = async (archiveId) => {
+  console.log('archiveId', archiveId)
+  const conn = await pool.getConnection()
+
+  try {
+    await conn.beginTransaction()
+
+    await conn.query(deleteArchiveFolder, [archiveId])
+    await conn.query(deleteArchiveHashtag, [archiveId])
+    await conn.query(deleteArchiveImage, [archiveId])
+    await conn.query(deleteArchive, [archiveId])
+
+    await conn.commit()
+
+    conn.release()
+    return archiveId
   } catch (error) {
     console.log(error)
     throw new BaseError(status.PARAMETER_IS_WRONG)
