@@ -8,7 +8,7 @@ import {
   insertHashtag,
   insertPlaceHashtag,
   insertPlaceImage,
-  selectAllPlace
+  selectAllPlace,
 } from './place.sql'
 
 export const addPlace = async (
@@ -91,54 +91,54 @@ export const addPlace = async (
 }
 
 export const getPreferencePlacesList = async (
-  user_id, 
-  category, 
-  sort, 
-  visit
-  ) => {
-  let queryString = selectAllPlace;
-  let visitCondition = '';
-  let categoryCondition = '';
-  let sortCondition = '';
-  console.log(user_id);
+  user_id,
+  category,
+  sort,
+  visit,
+) => {
+  let queryString = selectAllPlace
+  let visitCondition = ''
+  let categoryCondition = ''
+  let sortCondition = ''
+  console.log(user_id)
 
   // 가본 장소, 안가본 장소 조건
-  if (visit === 3001){
+  if (visit === 3001) {
     visitCondition = ' AND user_place.is_visited = true'
   }
 
-  if (visit === 3002){
+  if (visit === 3002) {
     visitCondition = ' AND user_place.is_visited = false'
   }
 
   // 카테고리 조건
-  if (category.length > 0){
-    const categories = category.join(',');
-    categoryCondition = ` AND place.category_id IN (${categories})`;
+  if (category.length > 0) {
+    const categories = category.join(',')
+    categoryCondition = ` AND place.category_id IN (${categories})`
   }
 
   // 정렬 조건
-  if (sort === 2000){
-    sortCondition = ' ORDER BY place.name ASC';
+  if (sort === 2000) {
+    sortCondition = ' ORDER BY place.name ASC'
   }
 
-  if (sort === 2001){
-    sortCondtion = ' ORDER BY place.created_at ASC';
+  if (sort === 2001) {
+    sortCondtion = ' ORDER BY place.created_at ASC'
   }
 
-  queryString += visitCondition;
-  queryString += categoryCondition;
-  queryString += sortCondition;
+  queryString += visitCondition
+  queryString += categoryCondition
+  queryString += sortCondition
 
-  console.log(queryString);
-  try{
-    const conn = await pool.getConnection();
-    const placeList = await pool.query(queryString, user_id);
-    console.log(placeList);
-    conn.release();
-    return placeList;
-  } catch (err){
-    console.error(err);
-    throw new BaseError(status.PARAMETER_IS_WRONG);
+  console.log(queryString)
+  try {
+    const conn = await pool.getConnection()
+    const placeList = await pool.query(queryString, user_id)
+    console.log(placeList)
+    conn.release()
+    return placeList
+  } catch (err) {
+    console.error(err)
+    throw new BaseError(status.PARAMETER_IS_WRONG)
   }
 }
