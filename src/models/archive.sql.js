@@ -39,3 +39,17 @@ export const deleteArchiveFolder = `
 // 아카이브 글 수정
 export const updateArchive = `
     UPDATE archive SET title = ?, comment = ?, score = ?, menu = ?, cost = ?, visited_date = ?, is_public = ? WHERE id = ?`
+
+// 조회
+// 아카이브 글 상세 조회
+export const selectArchiveDetail = `
+    SELECT 
+        archive.*,
+        user.username AS author_username,
+        COUNT(archive.id) AS author_archive_count,
+        GROUP_CONCAT(archive_img.url) AS image_urls
+    FROM archive
+    LEFT JOIN user ON archive.user_id = user.id
+    LEFT JOIN archive_img ON archive.id = archive_img.archive_id
+    WHERE archive.id = ?
+    GROUP BY archive.id`
