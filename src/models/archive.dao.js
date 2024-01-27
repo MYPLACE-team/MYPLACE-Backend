@@ -21,16 +21,6 @@ export const addArchive = async (req) => {
   const userId = 1 //임시
 
   try {
-    // 존재여부 확인
-    const existingArchive = await conn.query(selectArchive, [
-      req.placeId,
-      userId,
-    ])
-
-    if (existingArchive[0].length > 0) {
-      return editArchive(existingArchive[0][0].id, req)
-    }
-
     // // 유저네임 가져오기
     const usernameResult = await conn.query(selectUsername, [userId])
     const username = usernameResult[0][0].username

@@ -36,10 +36,6 @@ export const deleteArchiveFolder = `
     DELETE FROM archive_folder WHERE archive_id = ?`
 
 // 수정
-// 존재하는 글인지 확인
-export const selectArchive = `
-        SELECT id FROM archive WHERE place_id = ? AND user_id = ?`
-
 // 아카이브 글 수정
 export const updateArchive = `
     UPDATE archive SET title = ?, comment = ?, score = ?, menu = ?, cost = ?, visited_date = ?, is_public = ? WHERE id = ?`
