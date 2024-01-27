@@ -4,6 +4,10 @@ export const insertPlace = `
     (lat, lon, name, address, category_id, rec_dish, closed_day, service, link, uploader)
     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
 
+// 마플장소 썸네일 추가
+export const insertPlaceThumbnail = `
+    INSERT INTO place_thumbnail (place_id, thumnail_url) VALUES (?, ?)`
+
 // 존재하는 해시태그인지 확인
 export const selectHashtag = `
     SELECT id FROM hashtag WHERE name = ?`
