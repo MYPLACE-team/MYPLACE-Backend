@@ -5,8 +5,8 @@ export const insertPlace = `
     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
 
 // 마플장소 썸네일 추가
-export const insertPlaceThumbnail = `
-    INSERT INTO place_thumbnail (place_id, thumnail_url) VALUES (?, ?)`
+export const updatePlaceThumbnail = `
+    UPDATE place SET thumbnail_url = ? WHERE id = ?`
 
 // 존재하는 해시태그인지 확인
 export const selectHashtag = `

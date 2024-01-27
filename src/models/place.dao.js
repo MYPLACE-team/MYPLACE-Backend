@@ -8,7 +8,7 @@ import {
   insertHashtag,
   insertPlaceHashtag,
   insertPlaceImage,
-  insertPlaceThumbnail,
+  updatePlaceThumbnail,
 } from './place.sql'
 
 export const addPlace = async (
@@ -30,6 +30,7 @@ export const addPlace = async (
     conn = await pool.getConnection()
     await conn.beginTransaction()
 
+    const hashtagIds = []
     for (const tag of hashtag) {
       const [rows] = await conn.query(selectHashtag, [tag])
       if (rows.length > 0) {
@@ -56,7 +57,7 @@ export const addPlace = async (
     const placeId = result.insertId
 
     // 썸네일 이미지 추가
-    await conn.query(insertPlaceThumbnail, [placeId, images[0]])
+    await conn.query(updatePlaceThumbnail, [images[0], placeId])
 
     // place_image 테이블에 데이터 추가
     for (const url of images) {
@@ -67,7 +68,6 @@ export const addPlace = async (
     for (const hashtagId of hashtagIds) {
       await conn.query(insertPlaceHashtag, [placeId, hashtagId])
     }
-
     await conn.commit()
     conn.release()
 
