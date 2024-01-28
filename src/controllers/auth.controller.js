@@ -45,3 +45,13 @@ export const authJWT = async (req, res) => {
     return res.send(err.data)
   }
 }
+
+export const authUpload = async (req, res) => {
+  console.log(req, res)
+  const filePath = req.file
+  if (!filePath) {
+    console.log('err')
+  }
+  console.log(filePath)
+  res.sned(filePath)
+}
