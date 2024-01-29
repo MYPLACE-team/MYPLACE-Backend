@@ -2,7 +2,7 @@ import express from 'express'
 import { authLogin, authJWT } from '../controllers/auth.controller'
 import {
   imageUploader,
-  middleUpload,
+  profileUpload,
   middleMultipleUpload,
 } from '../middlewares/aws.middleware'
 
@@ -12,7 +12,7 @@ authRouter.post('/login', authLogin)
 authRouter.get('/login', authJWT) //임시
 
 //사진 1개
-authRouter.post('/upload', imageUploader.single('image'), middleUpload) //임시
+authRouter.post('/upload', imageUploader.single('image'), profileUpload) //임시
 //사진 3개
 authRouter.post(
   '/uploads',

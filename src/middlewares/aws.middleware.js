@@ -1,3 +1,6 @@
+import { pool } from '../../config/db.config'
+import { BaseError } from '../../config/error'
+import { status } from '../../config/response.status'
 import AWS from 'aws-sdk'
 import multer from 'multer'
 import multerS3 from 'multer-s3'
@@ -33,7 +36,41 @@ export const imageUploader = multer({
   }),
 })
 
-export const middleUpload = async (req, res) => {
+//단일 파일 업로드
+export const profileUpload = async (req, res) => {
+  let conn
+  const { userId, location } = req.body
+  try {
+    conn = await pool.getConnection()
+    await conn.beginTransaction()
+    await conn.query('UPDATE user SET profile_img=? WHERE id = ?;', [
+      req.file.location,
+      userId,
+    ])
+    await s3.deleteObject(
+      {
+        Bucket: process.env.S3_BUCKET_NAME,
+        Key: `profile/${location.split('profile/')[1]}`,
+      },
+      (err) => {
+        if (err) throw err
+      },
+    )
+    await conn.commit()
+    conn.release()
+  } catch (err) {
+    console.log('ADDUSER: ', err)
+
+    try {
+      if (conn) {
+        await conn.rollback()
+      }
+    } catch (rollbackError) {
+      console.error('Error in rollback:', rollbackError)
+    }
+
+    throw new BaseError(status.PARAMETER_IS_WRONG)
+  }
   const filePath = req.file
   if (!filePath) {
     console.log('err')
@@ -41,7 +78,30 @@ export const middleUpload = async (req, res) => {
   console.log(filePath)
   res.send(filePath)
 }
+
+//여러 사진 업로드 (3개 제한을 프론트에서 한다고 가정.)
 export const middleMultipleUpload = async (req, res) => {
+  let conn
+  try {
+    conn = await pool.getConnection()
+    await conn.beginTransaction()
+    //await conn.query(insertOauthSql, [result[0].insertId, oauthId, provider])
+    await conn.commit()
+    conn.release()
+  } catch (err) {
+    console.log('ADDUSER: ', err)
+
+    try {
+      if (conn) {
+        await conn.rollback()
+      }
+    } catch (rollbackError) {
+      console.error('Error in rollback:', rollbackError)
+    }
+
+    throw new BaseError(status.PARAMETER_IS_WRONG)
+  }
+
   const filePath = req.files
   if (!filePath) {
     console.log('err')
