@@ -105,6 +105,13 @@ export const editArchive = async (archiveId, req) => {
   try {
     await conn.beginTransaction()
 
+    // 아카이브 존재 여부 확인
+    const archive = await conn.query(selectArchive, [archiveId])
+
+    if (archive[0].length === 0) {
+      throw new BaseError(status.PARAMETER_IS_WRONG)
+    }
+
     await conn.query(updateArchive, [
       req.title,
       req.comment,

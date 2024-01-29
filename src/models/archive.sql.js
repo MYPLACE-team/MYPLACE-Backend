@@ -39,3 +39,6 @@ export const deleteArchiveFolder = `
 // 아카이브 글 수정
 export const updateArchive = `
     UPDATE archive SET title = ?, comment = ?, score = ?, menu = ?, cost = ?, visited_date = ?, is_public = ? WHERE id = ?`
+
+export const selectArchive = `
+    SELECT * FROM archive WHERE id = ?`
