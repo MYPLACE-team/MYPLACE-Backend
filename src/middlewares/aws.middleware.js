@@ -7,6 +7,7 @@ import multerS3 from 'multer-s3'
 import dotenv from 'dotenv'
 import path from 'path'
 import { v4 as uuid } from 'uuid'
+import { response } from '../../config/response'
 dotenv.config()
 
 AWS.config.update({
@@ -24,7 +25,7 @@ export const imageUploader = multer({
     s3: s3,
     bucket: process.env.S3_BUCKET_NAME, // 생성한 버킷 이름을 적어주세요.
     key: (req, file, callback) => {
-      const uploadDirectory = req.query.directory ?? 'profile' // 업로드할 디렉토리를 설정하기 위해 넣어둔 코드로, 없어도 무관합니다.
+      const uploadDirectory = req.params.directory ?? 'dummy' // 업로드할 디렉토리를 설정하기 위해 넣어둔 코드로, 없어도 무관합니다.
       const extension = path.extname(file.originalname)
       if (!allowedExtensions.includes(extension)) {
         // extension 확인을 위한 코드로, 없어도 무관합니다.
@@ -76,15 +77,28 @@ export const profileUpload = async (req, res) => {
     console.log('err')
   }
   console.log(filePath)
-  res.send(filePath)
+  res.send(response(status.SUCCESS, req.file.location))
 }
 
 //여러 사진 업로드 (3개 제한을 프론트에서 한다고 가정.)
 export const middleMultipleUpload = async (req, res) => {
+  const result = []
+  const { directory, archiveId } = req.params
+  console.log(directory, archiveId)
+  req.files.forEach((file) => {
+    result.push(file.location)
+  })
   let conn
   try {
     conn = await pool.getConnection()
     await conn.beginTransaction()
+    await req.files.forEach((file) => {
+      if (directory == 'archive')
+        conn.query('INSERT INTO archive_img(archive_id, url) VALUES(?,? );', [
+          archiveId,
+          file.location,
+        ])
+    })
     //await conn.query(insertOauthSql, [result[0].insertId, oauthId, provider])
     await conn.commit()
     conn.release()
@@ -106,6 +120,5 @@ export const middleMultipleUpload = async (req, res) => {
   if (!filePath) {
     console.log('err')
   }
-  console.log(filePath)
-  res.send(filePath)
+  res.send(response(status.SUCCESS, result))
 }

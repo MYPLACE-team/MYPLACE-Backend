@@ -12,10 +12,15 @@ authRouter.post('/login', authLogin)
 authRouter.get('/login', authJWT) //임시
 
 //사진 1개
-authRouter.post('/upload', imageUploader.single('image'), profileUpload) //임시
+authRouter.post(
+  '/upload/:directory',
+  imageUploader.single('image'),
+  profileUpload,
+)
+
 //사진 3개
 authRouter.post(
-  '/uploads',
+  '/uploads/:directory/:archiveId',
   imageUploader.array('image', 3),
   middleMultipleUpload,
 )
