@@ -69,7 +69,6 @@ export const addArchive = async (req) => {
 
     conn.release()
     return archiveId
-    return 1
   } catch (error) {
     console.log(error)
     throw new BaseError(status.PARAMETER_IS_WRONG)
