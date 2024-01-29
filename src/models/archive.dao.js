@@ -8,6 +8,7 @@ import {
   insertArchiveFolder,
   insertArchiveHashtag,
   insertArchiveImage,
+  selectFolder,
 } from './archive.sql'
 
 export const addArchive = async (req) => {
@@ -19,10 +20,12 @@ export const addArchive = async (req) => {
     const usernameResult = await conn.query(selectUsername, 1)
     const username = usernameResult[0][0].username
 
-    if (!username) {
+    // 폴더 존재 여부 확인
+    const folder = await conn.query(selectFolder, [req.folder])
+
+    if (!username || !folder) {
       throw new BaseError(status.PARAMETER_IS_WRONG)
     }
-    console.log('username', username)
 
     const insertResult = await conn.query(insertArchive, [
       username,

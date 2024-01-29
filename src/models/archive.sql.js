@@ -16,3 +16,6 @@ export const insertArchiveHashtag = `
 //아카이브-폴더 추가
 export const insertArchiveFolder = `
     INSERT INTO archive_folder (archive_id, folder_id) VALUES (?, ?)`
+
+export const selectFolder = `
+    SELECT * FROM folder WHERE id = ?`
