@@ -65,7 +65,8 @@ export const addPreferencePlaceController = async (req, res) => {
     const result = await addPreferencePlace(userId, placeId)
     res.status(201).json(response(status.SUCCESS, { placeId }))
   } catch (err) {
-    console.error('Error in addPreferencePlaceController:', err)
-    res.status(err.status || 500).json(response(err.code, null))
+    console.error('Error in addPreferencePlaceController:', err);
+    res.send(response(status.BAD_REQUEST, null));
+    // res.status(err.status || 500).json(response(err.code, null))
   }
 }
