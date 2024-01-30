@@ -4,6 +4,7 @@ import { addPlace } from '../models/place.dao.js'
 import {
   showPreferencePlacesService,
   searchPlaceService,
+  toggleVisitedService
 } from '../services/place.service.js'
 
 // 장소 등록
@@ -48,8 +49,9 @@ export const addPlaceController = async (req, res) => {
 
 export const showPreferencePlacesController = async (req, res) => {
   console.log('유저가 관심장소 조회를 요청하였습니다')
+
   try {
-    const placeList = await showPreferencePlacesService(req.body)
+    const placeList = await showPreferencePlacesService(data)
 
     res.send(response(status.SHOW_PREFERENCE_PLACES_SUCCESS, placeList))
   } catch (err) {
@@ -88,5 +90,28 @@ export const searchPlaceController = async (req, res) => {
   } catch (err) {
     console.error('Error in searchPlaceController:', err)
     res.send(response(status.BAD_REQUEST, null))
+  }
+}
+
+// 가본 장소, 안가본 장소 변경
+export const toggleVisitedController = async (req, res) => {
+  console.log('가본 장소/안가본 장소 변경')
+  console.log(req.place_id);
+  const user_id = 1 // 임시
+  const place_id = req.body.place_id
+
+  const data = {
+    user_id,
+    place_id
+  }
+
+  try{
+    const result = await toggleVisitedService(data);
+    console.log(result);
+    res.send(response(status.PLACE_VISITED_TOGGLE_SUCCESS, "Success"));
+
+  } catch (err){
+    console.error(err);
+    res.send(response(status.BAD_REQUEST, null));
   }
 }
