@@ -49,6 +49,17 @@ export const addPlaceController = async (req, res) => {
 
 export const showPreferencePlacesController = async (req, res) => {
   console.log('유저가 관심장소 조회를 요청하였습니다')
+  const user_id = 1 // 임시
+  const category = req.body.category
+  const sort = req.body.sort
+  const visit = req.body.visit
+
+  const data = {
+    user_id,
+    category,
+    sort,
+    visit
+  }
 
   try {
     const placeList = await showPreferencePlacesService(data)
