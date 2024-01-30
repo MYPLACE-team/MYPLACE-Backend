@@ -11,11 +11,11 @@ export const showPreferencePlacesService = async (req) => {
       req.sort,
       req.visit,
     )
+
+    return showPreferencePlacesDTO(placeList)
   } catch (err) {
     console.error(err)
   }
-
-  return showPreferencePlacesDTO(placeList)
 }
 
 export const searchPlaceService = async (req) => {
