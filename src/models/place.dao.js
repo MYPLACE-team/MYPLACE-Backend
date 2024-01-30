@@ -133,7 +133,7 @@ export const getPreferencePlacesList = async (
 
   try {
     const conn = await pool.getConnection()
-    const placeList = await pool.query(queryString, user_id)
+    const [placeList] = await pool.query(queryString, user_id)
     conn.release()
 
     return placeList
