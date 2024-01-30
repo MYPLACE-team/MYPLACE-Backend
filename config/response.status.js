@@ -48,4 +48,10 @@ export const status = {
     code: 'PLACE2000',
     message: '관심 장소 조회가 정상적으로 수행되었습니다',
   },
+  PLACE_VISITED_TOGGLE_SUCCESS: {
+    status: 200,
+    isSuccess: true,
+    code: 'PLACE2001',
+    message: '방문 여부 정보 변경이 정상적으로 수행되었습니다',
+  },
 }
