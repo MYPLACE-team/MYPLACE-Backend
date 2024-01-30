@@ -10,6 +10,7 @@ import {
   insertPlaceImage,
   selectAllPlace,
   selectSearchPlace,
+  toggleVisitedAttribute
 } from './place.sql'
 
 export const addPlace = async (
@@ -101,7 +102,6 @@ export const getPreferencePlacesList = async (
   let visitCondition = ''
   let categoryCondition = ''
   let sortCondition = ''
-  console.log(user_id)
 
   // 가본 장소, 안가본 장소 조건
   if (visit === 3001) {
@@ -131,12 +131,11 @@ export const getPreferencePlacesList = async (
   queryString += categoryCondition
   queryString += sortCondition
 
-  console.log(queryString)
   try {
     const conn = await pool.getConnection()
     const placeList = await pool.query(queryString, user_id)
-    console.log(placeList)
     conn.release()
+
     return placeList
   } catch (err) {
     console.error(err)
@@ -156,4 +155,20 @@ export const getSearchPlace = async (req) => {
   ])
   conn.release()
   return rows
+}
+
+export const toggleVisited = async (req) => {
+  try{
+    const conn = await pool.getConnection()
+    const [result] = await pool.query(toggleVisitedAttribute, [
+      req.user_id,
+      req.place_id
+    ])
+    console.log(result)
+    conn.release()
+
+    return result
+  } catch (err){
+    console.error(err);
+  }
 }
