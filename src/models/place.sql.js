@@ -22,8 +22,12 @@ export const insertPlaceImage = `
 
 // 유저가 선택한 장소 전체 조회
 export const selectAllPlace = `
-  SELECT place.name, place.address, place.id 
-  FROM user_place JOIN place ON user_place.place_id = place.id 
+    SELECT 
+        place.name, 
+        place.address, 
+        place.id 
+  FROM user_place 
+  JOIN place ON user_place.place_id = place.id 
   WHERE user_place.user_id = ?`
 
 // 장소 검색
@@ -37,4 +41,13 @@ export const selectSearchPlace = `
     CASE WHEN user_place.place_id IS NOT NULL THEN TRUE ELSE FALSE END AS isLike
     FROM place LEFT JOIN user_place ON place.id = user_place.place_id AND user_place.user_id = ?
     WHERE place.name LIKE ?;
+`
+
+// visited 여부 toggle
+export const toggleVisitedAttribute = `
+    UPDATE 
+        user_place
+    SET is_visited = if(is_visited = 1, 0, 1)
+    WHERE user_id = ?
+    AND place_id = ?
 `
