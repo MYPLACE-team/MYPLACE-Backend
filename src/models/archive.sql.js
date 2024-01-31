@@ -42,3 +42,6 @@ export const updateArchive = `
 
 export const selectArchive = `
     SELECT * FROM archive WHERE id = ?`
+
+export const selectFolder = `
+    SELECT * FROM folder WHERE id = ?`
