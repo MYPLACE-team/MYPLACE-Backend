@@ -39,7 +39,7 @@ export const addPlaceController = async (req, res) => {
     res.status(201).json(response(status.SUCCESS, { placeId }))
   } catch (error) {
     console.error('Error in addPlaceController:', error)
-    res.status(error.status || 500).json(response(error.code, null))
+    res.send(response(status.BAD_REQUEST, null))
   }
 }
 
@@ -52,7 +52,6 @@ export const showPreferencePlacesController = async (req, res) => {
   } catch (err) {
     console.error('Error in showPreferencePlacesController:', err)
     res.send(response(status.BAD_REQUEST, null))
-    // res.status(err.status || 500).json(response(err.code, null));
   }
 }
 
@@ -69,6 +68,6 @@ export const cancelPreferencePlaceController = async (req, res) => {
     res.status(200).json(response(status.SUCCESS, { placeId }))
   } catch (err) {
     console.error('Error in deletePreferencePlaceController:', err)
-    res.status(err.status || 500).json(response(err.code, null))
+    res.send(response(status.BAD_REQUEST, null))
   }
 }
