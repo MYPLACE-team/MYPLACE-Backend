@@ -10,7 +10,10 @@ import {
   insertPlaceImage,
   selectAllPlace,
   deletePreferencePlace,
+  selectPlace,
 } from './place.sql'
+
+import { selectUser } from './auth.sql'
 
 export const addPlace = async (
   lat,
@@ -145,6 +148,16 @@ export const getPreferencePlacesList = async (
 }
 
 export const cancelPreferencePlace = async (user_id, place_id) => {
+  // 유저/장소 존재 여부 확인
+  const user = await pool.query(selectUser, user_id)
+  const place = await pool.query(selectPlace, place_id)
+
+  console.log('user', user)
+  console.log('place', place)
+  if (place[0].length === 0 || user[0].length === 0) {
+    throw new BaseError(status.PLACE_IS_NOT_EXIST)
+  }
+
   try {
     const conn = await pool.getConnection()
     const result = await pool.query(deletePreferencePlace, [user_id, place_id])

@@ -29,3 +29,6 @@ export const selectAllPlace = `
 // 관심장소 취소
 export const deletePreferencePlace = `
     DELETE FROM user_place WHERE user_id = ? AND place_id = ?`
+
+export const selectPlace = `
+    SELECT * FROM place WHERE id = ?`
