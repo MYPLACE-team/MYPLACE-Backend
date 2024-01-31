@@ -11,6 +11,8 @@ import {
   selectAllPlace,
   deletePreferencePlace,
   selectPlace,
+  insertPreferencePlace,
+  selectSearchPlace,
 } from './place.sql'
 
 import { selectUser } from './auth.sql'
@@ -165,4 +167,30 @@ export const cancelPreferencePlace = async (user_id, place_id) => {
     console.error(err)
     throw new BaseError(status.PARAMETER_IS_WRONG)
   }
+}
+
+export const addPreferencePlace = async (user_id, place_id) => {
+  try {
+    const conn = await pool.getConnection()
+    const result = await pool.query(insertPreferencePlace, [user_id, place_id])
+    conn.release()
+    return result
+  } catch (err) {
+    console.error(err)
+    throw new BaseError(status.PARAMETER_IS_WRONG)
+  }
+}
+
+export const getSearchPlace = async (req) => {
+  const offset = (req.page - 1) * 10
+  const limit = 10
+  const conn = await pool.getConnection()
+  const [rows] = await conn.query(selectSearchPlace, [
+    req.user_id,
+    `%${req.keyword}%`,
+    offset,
+    limit,
+  ])
+  conn.release()
+  return rows
 }
