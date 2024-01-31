@@ -26,6 +26,14 @@ export const selectAllPlace = `
   FROM user_place JOIN place ON user_place.place_id = place.id 
   WHERE user_place.user_id = ?`
 
+// 관심장소 취소
+export const deletePreferencePlace = `
+    DELETE FROM user_place WHERE user_id = ? AND place_id = ?`
+
+// 장소 조회
+export const selectPlace = `
+    SELECT * FROM place WHERE id = ?`
+
 // 관심장소 추가
 export const insertPreferencePlace = `
     INSERT INTO user_place (user_id, place_id) VALUES (?, ?)`
