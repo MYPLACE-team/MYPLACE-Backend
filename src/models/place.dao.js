@@ -10,6 +10,7 @@ import {
   insertPlaceImage,
   selectAllPlace,
   insertPreferencePlace,
+  selectSearchPlace,
 } from './place.sql'
 
 export const addPlace = async (
@@ -154,4 +155,18 @@ export const addPreferencePlace = async (user_id, place_id) => {
     console.error(err)
     throw new BaseError(status.PARAMETER_IS_WRONG)
   }
+}
+
+export const getSearchPlace = async (req) => {
+  const offset = (req.page - 1) * 10
+  const limit = 10
+  const conn = await pool.getConnection()
+  const [rows] = await conn.query(selectSearchPlace, [
+    req.user_id,
+    `%${req.keyword}%`,
+    offset,
+    limit,
+  ])
+  conn.release()
+  return rows
 }

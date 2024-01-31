@@ -29,3 +29,16 @@ export const selectAllPlace = `
 // 관심장소 추가
 export const insertPreferencePlace = `
     INSERT INTO user_place (user_id, place_id) VALUES (?, ?)`
+
+// 장소 검색
+export const selectSearchPlace = `
+    SELECT
+        place.id,
+        place.name,
+        place.address,
+        place.category_id,
+        place.thumbnail_url,
+    CASE WHEN user_place.place_id IS NOT NULL THEN TRUE ELSE FALSE END AS isLike
+    FROM place LEFT JOIN user_place ON place.id = user_place.place_id AND user_place.user_id = ?
+    WHERE place.name LIKE ?;
+`
