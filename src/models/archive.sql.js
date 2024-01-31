@@ -34,3 +34,6 @@ export const deleteArchiveHashtag = `
 // 아카이브-폴더 삭제
 export const deleteArchiveFolder = `
     DELETE FROM archive_folder WHERE archive_id = ?`
+
+export const selectArchive = `
+    SELECT * FROM archive WHERE id = ?`

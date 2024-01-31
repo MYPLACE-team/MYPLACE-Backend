@@ -10,7 +10,7 @@ export const addArchiveController = async (req, res, next) => {
     res.status(201).json(response(status.SUCCESS, { archiveId }))
   } catch (error) {
     console.error('Error in addArchiveController:', error)
-    res.status(error.status || 500).json(response(error.code, null))
+    res.send(response(status.BAD_REQUEST, null))
   }
 }
 
@@ -20,9 +20,9 @@ export const removeArchiveController = async (req, res, next) => {
   try {
     const result = await removeArchive(archiveId)
     console.log('아카이브 글 삭제 성공')
-    res.status(201).json(response(status.SUCCESS, { archiveId }))
+    res.status(200).json(response(status.SUCCESS, { archiveId }))
   } catch (error) {
     console.error('Error in deleteArchiveController:', error)
-    res.status(error.status || 500).json(response(error.code, null))
+    res.send(response(status.BAD_REQUEST, null))
   }
 }

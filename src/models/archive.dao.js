@@ -12,6 +12,7 @@ import {
   deleteArchiveFolder,
   deleteArchiveHashtag,
   deleteArchiveImage,
+  selectArchive,
 } from './archive.sql'
 
 export const addArchive = async (req) => {
@@ -79,6 +80,12 @@ export const addArchive = async (req) => {
 export const removeArchive = async (archiveId) => {
   console.log('archiveId', archiveId)
   const conn = await pool.getConnection()
+
+  const archive = await conn.query(selectArchive, archiveId)
+
+  if (archive[0].length === 0) {
+    throw new BaseError(status.PARAMETER_IS_WRONG)
+  }
 
   try {
     await conn.beginTransaction()
