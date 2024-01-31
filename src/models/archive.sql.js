@@ -53,3 +53,6 @@ export const selectArchiveDetail = `
     LEFT JOIN archive_img ON archive.id = archive_img.archive_id
     WHERE archive.id = ?
     GROUP BY archive.id`
+
+export const selectFolder = `
+    SELECT * FROM folder WHERE id = ?`

@@ -15,7 +15,7 @@ export const addArchiveController = async (req, res, next) => {
     res.status(201).json(response(status.SUCCESS, { archiveId }))
   } catch (error) {
     console.error('Error in addArchiveController:', error)
-    res.status(error.status || 500).json(response(error.code, null))
+    res.send(response(status.BAD_REQUEST, null))
   }
 }
 
@@ -28,7 +28,7 @@ export const removeArchiveController = async (req, res, next) => {
     res.status(201).json(response(status.SUCCESS, { archiveId }))
   } catch (error) {
     console.error('Error in deleteArchiveController:', error)
-    res.status(error.status || 500).json(response(error.code, null))
+    res.send(response(status.BAD_REQUEST, null))
   }
 }
 
@@ -41,7 +41,7 @@ export const editArchiveController = async (req, res, next) => {
     res.status(201).json(response(status.SUCCESS, { archiveId }))
   } catch (error) {
     console.error('Error in editArchiveController:', error)
-    res.status(error.status || 500).json(response(error.code, null))
+    res.send(response(status.BAD_REQUEST, null))
   }
 }
 
@@ -55,6 +55,6 @@ export const showArchiveDetailController = async (req, res, next) => {
     res.status(201).json(response(status.SUCCESS, result))
   } catch (error) {
     console.error('Error in showArchiveDetailController:', error)
-    res.status(error.status || 500).json(response(error.code, null))
+    res.send(response(status.BAD_REQUEST, null))
   }
 }
