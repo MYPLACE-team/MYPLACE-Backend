@@ -26,6 +26,10 @@ export const selectAllPlace = `
   FROM user_place JOIN place ON user_place.place_id = place.id 
   WHERE user_place.user_id = ?`
 
+// 관심장소 추가
+export const insertPreferencePlace = `
+    INSERT INTO user_place (user_id, place_id) VALUES (?, ?)`
+
 // 장소 검색
 export const selectSearchPlace = `
     SELECT

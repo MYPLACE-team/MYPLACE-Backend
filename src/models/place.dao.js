@@ -9,6 +9,7 @@ import {
   insertPlaceHashtag,
   insertPlaceImage,
   selectAllPlace,
+  insertPreferencePlace,
   selectSearchPlace,
 } from './place.sql'
 
@@ -138,6 +139,18 @@ export const getPreferencePlacesList = async (
     console.log(placeList)
     conn.release()
     return placeList
+  } catch (err) {
+    console.error(err)
+    throw new BaseError(status.PARAMETER_IS_WRONG)
+  }
+}
+
+export const addPreferencePlace = async (user_id, place_id) => {
+  try {
+    const conn = await pool.getConnection()
+    const result = await pool.query(insertPreferencePlace, [user_id, place_id])
+    conn.release()
+    return result
   } catch (err) {
     console.error(err)
     throw new BaseError(status.PARAMETER_IS_WRONG)

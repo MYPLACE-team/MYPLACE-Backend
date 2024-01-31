@@ -1,6 +1,6 @@
 import { status } from '../../config/response.status.js'
 import { response } from '../../config/response.js'
-import { addPlace } from '../models/place.dao.js'
+import { addPlace, addPreferencePlace } from '../models/place.dao.js'
 import {
   showPreferencePlacesService,
   searchPlaceService,
@@ -56,6 +56,21 @@ export const showPreferencePlacesController = async (req, res) => {
     console.error('Error in showPreferencePlacesController:', err)
     res.send(response(status.BAD_REQUEST, null))
     // res.status(err.status || 500).json(response(err.code, null));
+  }
+}
+
+// 관심장소 추가
+export const addPreferencePlaceController = async (req, res) => {
+  const { placeId } = req.params
+  const userId = 1 // 임시 변수
+
+  try {
+    const result = await addPreferencePlace(userId, placeId)
+    res.status(201).json(response(status.SUCCESS, { placeId }))
+  } catch (err) {
+    console.error('Error in addPreferencePlaceController:', err)
+    res.send(response(status.BAD_REQUEST, null))
+    // res.status(err.status || 500).json(response(err.code, null))
   }
 }
 
