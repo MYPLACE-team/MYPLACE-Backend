@@ -3,6 +3,7 @@ import cors from 'cors'
 
 import { authRouter } from './src/routes/auth.route'
 import { placeRouter } from './src/routes/place.route'
+import { archiveRouter } from './src/routes/archive.route'
 
 const app = express()
 const port = 3000
@@ -10,6 +11,7 @@ app.use(express.json())
 
 app.use('/auth', authRouter)
 app.use('/place', placeRouter)
+app.use('/archive', archiveRouter)
 
 app.get('/', function (req, res) {
   res.send('Hello World')
