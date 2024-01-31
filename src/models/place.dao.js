@@ -152,8 +152,6 @@ export const cancelPreferencePlace = async (user_id, place_id) => {
   const user = await pool.query(selectUser, user_id)
   const place = await pool.query(selectPlace, place_id)
 
-  console.log('user', user)
-  console.log('place', place)
   if (place[0].length === 0 || user[0].length === 0) {
     throw new BaseError(status.PLACE_IS_NOT_EXIST)
   }
