@@ -8,3 +8,6 @@ export const insertUserSql =
 //유저 oauth정보 저장
 export const insertOauthSql =
   'INSERT INTO oauthid(user_id, provider,kakao_id) VALUES(?,?,? );'
+
+export const selectUser = `
+    SELECT * FROM user WHERE id = ?`
