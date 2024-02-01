@@ -38,6 +38,6 @@ export const addPlaceController = async (req, res) => {
     res.status(201).json(response(status.SUCCESS, { placeId }))
   } catch (error) {
     console.error('Error in addPlaceController:', error)
-    res.status(error.status || 500).json(response(error.code, null))
+    res.send(response(status.BAD_REQUEST, null))
   }
 }

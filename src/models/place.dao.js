@@ -23,9 +23,9 @@ export const addPlace = async (
   link,
   hashtag,
   images,
-  uploader,
 ) => {
   let conn
+  const userId = 1 // 임시
   try {
     conn = await pool.getConnection()
     await conn.beginTransaction()
@@ -51,7 +51,7 @@ export const addPlace = async (
       closedDay,
       service,
       link,
-      uploader, //임시
+      userId,
     ])
 
     const placeId = result.insertId
