@@ -42,6 +42,7 @@
     "@babel/eslint-parser": "^7.23.3",
     "@babel/node": "^7.23.9",
     "@babel/preset-env": "^7.23.9",
+    "@babel/register": "^7.23.7",
     "eslint": "^8.56.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.1.3",
