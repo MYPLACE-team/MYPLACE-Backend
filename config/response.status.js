@@ -61,4 +61,10 @@ export const status = {
     code: 'CTRL4000',
     message: '잘못된 데이터입니다!',
   },
+  NOT_FOUND: {
+    status: 404,
+    isSuccess: false,
+    code: 'PAGE4000',
+    message: '요청한 정보를 찾을 수 없습니다.',
+  },
 }

@@ -39,7 +39,7 @@ export const authLogin = async (req, res) => {
     //   }
     return res.send(response(status.INVAILD_PROVIDER, null))
   } catch (err) {
-    console.log('controller Err: ', err)
+    console.log('LoginController Err: ', err)
     return res.send(response(status.CONTROL_ERROR, null))
   }
 }
