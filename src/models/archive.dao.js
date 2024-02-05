@@ -8,6 +8,11 @@ import {
   insertArchiveFolder,
   insertArchiveHashtag,
   insertArchiveImage,
+  deleteArchive,
+  deleteArchiveFolder,
+  deleteArchiveHashtag,
+  deleteArchiveImage,
+  selectArchive,
   selectFolder,
 } from './archive.sql'
 
@@ -64,6 +69,34 @@ export const addArchive = async (req) => {
 
     // 폴더 정보 저장
     await conn.query(insertArchiveFolder, [archiveId, req.folder])
+
+    await conn.commit()
+
+    conn.release()
+    return archiveId
+  } catch (error) {
+    console.log(error)
+    throw new BaseError(status.PARAMETER_IS_WRONG)
+  }
+}
+
+export const removeArchive = async (archiveId) => {
+  console.log('archiveId', archiveId)
+  const conn = await pool.getConnection()
+
+  const archive = await conn.query(selectArchive, archiveId)
+
+  if (archive[0].length === 0) {
+    throw new BaseError(status.PARAMETER_IS_WRONG)
+  }
+
+  try {
+    await conn.beginTransaction()
+
+    await conn.query(deleteArchiveFolder, [archiveId])
+    await conn.query(deleteArchiveHashtag, [archiveId])
+    await conn.query(deleteArchiveImage, [archiveId])
+    await conn.query(deleteArchive, [archiveId])
 
     await conn.commit()
 
