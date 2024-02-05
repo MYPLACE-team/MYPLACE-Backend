@@ -85,6 +85,12 @@ export const addArchive = async (req) => {
 export const removeArchive = async (archiveId) => {
   const conn = await pool.getConnection()
 
+  const archive = await conn.query(selectArchive, archiveId)
+
+  if (archive[0].length === 0) {
+    throw new BaseError(status.PARAMETER_IS_WRONG)
+  }
+
   try {
     await conn.beginTransaction()
 
