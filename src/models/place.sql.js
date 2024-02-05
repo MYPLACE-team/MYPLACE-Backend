@@ -62,3 +62,35 @@ export const selectSearchPlace = `
     FROM place LEFT JOIN user_place ON place.id = user_place.place_id AND user_place.user_id = ?
     WHERE place.name LIKE ?;
 `
+
+// 장소 상세 조회
+export const selectPlaceDetail = `
+    SELECT
+        place.id,
+        place.name,
+        place.address,
+        place.category_id,
+        place.rec_dish,
+        place.closed_day,
+        place.service,
+        place.link,
+        user.username AS uploader_username,
+        place.uploader,
+        place.created_at,
+        place.updated_at,
+    CASE WHEN user_place.place_id IS NOT NULL THEN TRUE ELSE FALSE END AS isLike
+    FROM place
+    LEFT JOIN user_place ON place.id = user_place.place_id AND user_place.user_id = ?
+    LEFT JOIN user ON place.uploader = user.id
+    WHERE place.id = ?`
+
+// 장소 이미지 조회
+export const selectPlaceImage = `
+    SELECT url FROM place_img WHERE place_id = ?`
+
+// 장소 해시태그 조회
+export const selectPlaceHashtag = `
+    SELECT hashtag.name
+    FROM place_hashtag
+    JOIN hashtag ON place_hashtag.hashtag_id = hashtag.id
+    WHERE place_hashtag.place_id = ?`

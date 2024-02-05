@@ -13,7 +13,11 @@ import {
   selectPlace,
   insertPreferencePlace,
   selectSearchPlace,
+  selectPlaceImage,
+  selectPlaceHashtag,
+  selectPlaceDetail,
 } from './place.sql'
+import { showPlaceDetailDTO } from '../dtos/place.dto'
 
 import { selectUser } from './auth.sql'
 
@@ -193,4 +197,32 @@ export const getSearchPlace = async (req) => {
   ])
   conn.release()
   return rows
+}
+
+export const getPlaceDetail = async (placeId, userId) => {
+  try {
+    const conn = await pool.getConnection()
+
+    const place = await conn.query(selectPlace, placeId)
+    if (place[0].length === 0) {
+      throw new BaseError(status.PLACE_IS_NOT_EXIST)
+    }
+
+    const placeData = await conn.query(selectPlaceDetail, [userId, placeId])
+    const hashtag = await conn.query(selectPlaceHashtag, placeId)
+    const images = await conn.query(selectPlaceImage, placeId)
+    const formattedHashtags = hashtag[0].map((tag) => tag.name)
+    const fotmattedImages = images[0].map((image) => image.url)
+
+    const result = showPlaceDetailDTO(
+      placeData[0],
+      formattedHashtags,
+      fotmattedImages,
+    )
+    conn.release()
+    return result
+  } catch (err) {
+    console.error(err)
+    throw new BaseError(status.PARAMETER_IS_WRONG)
+  }
 }
