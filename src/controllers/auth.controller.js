@@ -66,7 +66,10 @@ export const authGoogleRedirectTest = async (req, res) => {
 //임시
 export const authJWT = async (req, res) => {
   try {
-    return res.send(response(status.SUCCESS, await tokenCheck(req, res)))
+    console.log(req.headers['token'])
+    return res.send(
+      response(status.SUCCESS, await tokenVerify(req.headers['token'])),
+    )
   } catch (err) {
     return res.send(err.data)
   }
