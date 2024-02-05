@@ -2,8 +2,8 @@
 // 아카이브 글 등록
 export const insertArchive = `
     INSERT INTO archive 
-    (user_name, place_id, title, comment, score, menu, cost, visited_date, is_public)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+    (user_name, place_id, title, comment, score, menu, cost, visited_date, is_public, user_id, thumbnail)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 `
 
 // 아카이브-이미지 추가
@@ -34,6 +34,11 @@ export const deleteArchiveHashtag = `
 // 아카이브-폴더 삭제
 export const deleteArchiveFolder = `
     DELETE FROM archive_folder WHERE archive_id = ?`
+
+// 수정
+// 아카이브 글 수정
+export const updateArchive = `
+    UPDATE archive SET title = ?, comment = ?, score = ?, menu = ?, cost = ?, visited_date = ?, is_public = ? WHERE id = ?`
 
 export const selectArchive = `
     SELECT * FROM archive WHERE id = ?`

@@ -13,6 +13,7 @@ import {
   deleteArchiveHashtag,
   deleteArchiveImage,
   selectArchive,
+  updateArchive,
   selectFolder,
 } from './archive.sql'
 
@@ -21,8 +22,8 @@ export const addArchive = async (req) => {
   const userId = 1 //임시
 
   try {
-    // 유저네임 가져오기
-    const usernameResult = await conn.query(selectUsername, 1)
+    // // 유저네임 가져오기
+    const usernameResult = await conn.query(selectUsername, [userId])
     const username = usernameResult[0][0].username
 
     // 폴더 존재 여부 확인
@@ -42,6 +43,7 @@ export const addArchive = async (req) => {
       req.cost,
       req.visitedDate,
       req.isPublic,
+      userId,
     ])
 
     const archiveId = insertResult[0].insertId
@@ -81,7 +83,6 @@ export const addArchive = async (req) => {
 }
 
 export const removeArchive = async (archiveId) => {
-  console.log('archiveId', archiveId)
   const conn = await pool.getConnection()
 
   const archive = await conn.query(selectArchive, archiveId)
@@ -97,6 +98,65 @@ export const removeArchive = async (archiveId) => {
     await conn.query(deleteArchiveHashtag, [archiveId])
     await conn.query(deleteArchiveImage, [archiveId])
     await conn.query(deleteArchive, [archiveId])
+
+    await conn.commit()
+
+    conn.release()
+    return archiveId
+  } catch (error) {
+    console.log(error)
+    throw new BaseError(status.PARAMETER_IS_WRONG)
+  }
+}
+
+export const editArchive = async (archiveId, req) => {
+  const conn = await pool.getConnection()
+
+  try {
+    await conn.beginTransaction()
+
+    // 아카이브 존재 여부 확인
+    const archive = await conn.query(selectArchive, [archiveId])
+
+    if (archive[0].length === 0) {
+      throw new BaseError(status.PARAMETER_IS_WRONG)
+    }
+
+    await conn.query(updateArchive, [
+      req.title,
+      req.comment,
+      req.score,
+      req.menu,
+      req.cost,
+      req.visitedDate,
+      req.isPublic,
+      archiveId,
+    ])
+
+    // 기존 해시태그 및 이미지 정보 삭제
+    await conn.query(deleteArchiveHashtag, [archiveId])
+    await conn.query(deleteArchiveImage, [archiveId])
+
+    // 해시태그 정보 저장
+    const hashtagIds = []
+    for (const tag of req.hashtag) {
+      const [rows] = await conn.query(selectHashtag, [tag])
+      if (rows.length > 0) {
+        hashtagIds.push(rows[0].id)
+      } else {
+        const [result] = await conn.query(insertHashtag, [tag])
+        hashtagIds.push(result.insertId)
+      }
+    }
+
+    for (const hashtagId of hashtagIds) {
+      await conn.query(insertArchiveHashtag, [archiveId, hashtagId])
+    }
+
+    // 이미지 정보 저장
+    for (const imageUrl of req.images) {
+      await conn.query(insertArchiveImage, [archiveId, imageUrl])
+    }
 
     await conn.commit()
 
