@@ -54,6 +54,30 @@ export const status = {
     code: 'PLACE2000',
     message: '관심 장소 조회가 정상적으로 수행되었습니다',
   },
+  //TOKEN
+  TOKEN_ERROR: {
+    status: 400,
+    isSuccess: false,
+    code: 'TOEKN4000',
+    message: '토큰 오류입니다',
+  },
+  TOKEN_EXPIRED: {
+    status: 400,
+    isSuccess: false,
+    code: 'TOEKN4001',
+    message: '토큰 시간초과',
+  },
+  TOKEN_INVAILD: {
+    status: 400,
+    isSuccess: false,
+    code: 'TOEKN4002',
+    message: '유효하지 않은 토큰',
+  },
+  TOKEN_SIGNITURE: {
+    status: 400,
+    isSuccess: false,
+    code: 'TOEKN4003',
+    message: '토큰 서명 오류',
   //ERR
   CONTROL_ERROR: {
     status: 400,

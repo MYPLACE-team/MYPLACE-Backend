@@ -8,42 +8,7 @@ import {
   addOauth,
 } from '../models/auth.dao'
 import Axios from 'axios'
-import jwt from 'jsonwebtoken'
-import { jwtConfig } from '../../config/jwt.config'
-
-//토큰 생성
-export const tokenSign = async (user) => {
-  //현재는 username와 email을 payload로 넣었지만 필요한 값을 넣으면 됨!
-  const payload = {
-    username: user.username,
-    email: user.email,
-  }
-  console.log(user)
-  const result = jwt.sign(payload, jwtConfig.secretKey, jwtConfig.options)
-  return result
-}
-
-//토큰 인증
-export const tokenVerify = async (token) => {
-  let decoded
-  try {
-    // verify를 통해 값 decode!
-    decoded = jwt.verify(token, jwtConfig.secretKey)
-  } catch (err) {
-    if (err.message === 'jwt expired') {
-      console.log('expired token')
-      return 'TOKEN_EXPIRED'
-    } else if (err.message === 'invalid token') {
-      console.log('invalid token')
-      console.log('TOKEN_INVALID')
-      return 'TOKEN_INVALID'
-    } else {
-      console.log(err.message)
-      return err.message
-    }
-  }
-  return decoded
-}
+import { tokenSign } from '../middlewares/jwt.middleware'
 
 //카카오 소셜로그인
 export const kakaoLogin = async (headers, body) => {
