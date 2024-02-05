@@ -1,47 +1,19 @@
 import { status } from '../../config/response.status.js'
 import { response } from '../../config/response.js'
 import {
-  addPlace,
   cancelPreferencePlace,
   addPreferencePlace,
 } from '../models/place.dao.js'
 import {
   showPreferencePlacesService,
   searchPlaceService,
+  addPlaceService,
 } from '../services/place.service.js'
 
 // 장소 등록
 export const addPlaceController = async (req, res) => {
-  const {
-    lat,
-    lon,
-    name,
-    address,
-    categoryId,
-    recDish,
-    closedDay,
-    service,
-    link,
-    hashtag,
-    images,
-    uploader, //임시
-  } = req.body
-
   try {
-    const placeId = await addPlace(
-      lat,
-      lon,
-      name,
-      address,
-      categoryId,
-      recDish,
-      closedDay,
-      service,
-      link,
-      hashtag,
-      images,
-      uploader, //임시
-    )
+    const placeId = await addPlaceService(req.body)
 
     res.status(201).json(response(status.SUCCESS, { placeId }))
   } catch (error) {

@@ -18,19 +18,21 @@ import {
 
 import { selectUser } from './auth.sql'
 
-export const addPlace = async (
-  lat,
-  lon,
-  name,
-  address,
-  categoryId,
-  recDish,
-  closedDay,
-  service,
-  link,
-  hashtag,
-  images,
-) => {
+export const addPlace = async (req) => {
+  const {
+    lat,
+    lon,
+    name,
+    address,
+    categoryId,
+    recDish,
+    closedDay,
+    service,
+    link,
+    hashtag,
+    images,
+  } = req
+
   let conn
   const userId = 1 // 임시
   try {
