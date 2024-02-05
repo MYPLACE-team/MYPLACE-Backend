@@ -49,6 +49,7 @@ export const addUser = async (
   profileImage,
   provider,
   oauthId,
+  refresh,
 ) => {
   let conn
   try {
@@ -60,7 +61,12 @@ export const addUser = async (
       email,
       profileImage,
     ])
-    await conn.query(insertOauthSql, [result[0].insertId, oauthId, provider])
+    await conn.query(insertOauthSql, [
+      result[0].insertId,
+      oauthId,
+      provider,
+      refresh,
+    ])
     await conn.commit()
     conn.release()
     return result[0].insertId

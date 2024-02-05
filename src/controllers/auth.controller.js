@@ -1,6 +1,6 @@
 import { response } from '../../config/response.js'
 import { status } from '../../config/response.status.js'
-import { tokenVerify } from '../middlewares/jwt.middleware.js'
+import { tokenVerify, tokenCheck } from '../middlewares/jwt.middleware.js'
 
 import { kakaoLogin, googleLogin } from '../services/auth.service.js'
 
@@ -66,9 +66,7 @@ export const authGoogleRedirectTest = async (req, res) => {
 //임시
 export const authJWT = async (req, res) => {
   try {
-    return res.send(
-      response(status.SUCCESS, await tokenVerify(req.headers['token'])),
-    )
+    return res.send(response(status.SUCCESS, await tokenCheck(req, res)))
   } catch (err) {
     return res.send(err.data)
   }

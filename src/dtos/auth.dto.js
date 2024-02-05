@@ -1,5 +1,5 @@
 // login response DTO
-export const loginResponseDTO = (user, access_token) => {
+export const loginResponseDTO = (user, accessToken, refreshToken) => {
   user = user[0]
   console.log(user)
   return {
@@ -7,6 +7,7 @@ export const loginResponseDTO = (user, access_token) => {
     email: user.email,
     username: user.username,
     profile_img: user.profile_img,
-    access_Token: access_token,
+    accessToken: accessToken,
+    refreshToken: refreshToken,
   }
 }

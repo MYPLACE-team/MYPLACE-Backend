@@ -11,8 +11,10 @@ export const insertUserSql =
 
 //유저 oauth정보 저장
 export const insertOauthSql =
-  'INSERT INTO oauthid(user_id, access_token, provider) VALUES(?,?,? );'
+  'INSERT INTO oauthid(user_id, id, provider,access_token) VALUES(?,?,?,? );'
+
+export const insertOauthRefreshSql =
+  'UPDATE oauthid SET access_token = ? WHERE user_id = ?;'
 
 export const selectUser = `
     SELECT * FROM user WHERE id = ?`
-
