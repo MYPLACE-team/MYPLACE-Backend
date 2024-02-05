@@ -2,6 +2,7 @@ import express from 'express'
 import {
   addPlaceController,
   showPreferencePlacesController,
+  toggleVisitedController,
   cancelPreferencePlaceController,
   addPreferencePlaceController,
   searchPlaceController,
@@ -14,3 +15,4 @@ placeRouter.post('/like', showPreferencePlacesController)
 placeRouter.delete('/like/:placeId', cancelPreferencePlaceController)
 placeRouter.post('/like/:placeId', addPreferencePlaceController)
 placeRouter.get('/search', searchPlaceController)
+placeRouter.post('/visit', toggleVisitedController)
