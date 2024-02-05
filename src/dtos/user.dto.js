@@ -7,7 +7,7 @@ export const userResponseDTO = (result) => {
     userId: user.id,
     email: user.email,
     username: user.username,
-    profile_img: user.profile_img,
+    profileImg: user.profile_img,
     profile: user.profile,
     level: user.level,
     point: user.point,
