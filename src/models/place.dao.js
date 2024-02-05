@@ -164,10 +164,9 @@ export const toggleVisited = async (req) => {
       req.user_id,
       req.place_id
     ])
-    console.log(result)
     conn.release()
 
-    return result
+    return result.changedRows
   } catch (err){
     console.error(err);
   }

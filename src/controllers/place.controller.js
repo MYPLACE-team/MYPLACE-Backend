@@ -107,7 +107,6 @@ export const searchPlaceController = async (req, res) => {
 // 가본 장소, 안가본 장소 변경
 export const toggleVisitedController = async (req, res) => {
   console.log('가본 장소/안가본 장소 변경')
-  console.log(req.place_id);
   const user_id = 1 // 임시
   const place_id = req.body.place_id
 
@@ -116,13 +115,11 @@ export const toggleVisitedController = async (req, res) => {
     place_id
   }
 
-  try{
-    const result = await toggleVisitedService(data);
-    console.log(result);
-    res.send(response(status.PLACE_VISITED_TOGGLE_SUCCESS, "Success"));
+  const result = await toggleVisitedService(data)
 
-  } catch (err){
-    console.error(err);
-    res.send(response(status.BAD_REQUEST, null));
+  if (result === 1){
+    res.send(response(status.PLACE_VISITED_TOGGLE_SUCCESS, "Success"))
   }
+
+  res.send(response(status.BAD_REQUEST, null))
 }
