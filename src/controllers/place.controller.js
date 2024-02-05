@@ -1,6 +1,10 @@
 import { status } from '../../config/response.status.js'
 import { response } from '../../config/response.js'
-import { addPlace } from '../models/place.dao.js'
+import {
+  addPlace,
+  cancelPreferencePlace,
+  addPreferencePlace,
+} from '../models/place.dao.js'
 import {
   showPreferencePlacesService,
   searchPlaceService,
@@ -43,7 +47,7 @@ export const addPlaceController = async (req, res) => {
     res.status(201).json(response(status.SUCCESS, { placeId }))
   } catch (error) {
     console.error('Error in addPlaceController:', error)
-    res.status(error.status || 500).json(response(error.code, null))
+    res.send(response(status.BAD_REQUEST, null))
   }
 }
 
@@ -68,7 +72,38 @@ export const showPreferencePlacesController = async (req, res) => {
   } catch (err) {
     console.error('Error in showPreferencePlacesController:', err)
     res.send(response(status.BAD_REQUEST, null))
-    // res.status(err.status || 500).json(response(err.code, null));
+  }
+}
+
+export const cancelPreferencePlaceController = async (req, res) => {
+  console.log('관심장소 취소')
+
+  const { placeId } = req.params
+  const userId = 1 // 임시 변수
+
+  console.log('placeId', placeId)
+  try {
+    const result = await cancelPreferencePlace(userId, placeId)
+
+    res.status(200).json(response(status.SUCCESS, { placeId }))
+  } catch (err) {
+    console.error('Error in deletePreferencePlaceController:', err)
+    res.send(response(status.BAD_REQUEST, null))
+  }
+}
+
+// 관심장소 추가
+export const addPreferencePlaceController = async (req, res) => {
+  const { placeId } = req.params
+  const userId = 1 // 임시 변수
+
+  try {
+    const result = await addPreferencePlace(userId, placeId)
+    res.status(201).json(response(status.SUCCESS, { placeId }))
+  } catch (err) {
+    console.error('Error in addPreferencePlaceController:', err)
+    res.send(response(status.BAD_REQUEST, null))
+    // res.status(err.status || 500).json(response(err.code, null))
   }
 }
 

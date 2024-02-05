@@ -20,8 +20,14 @@ export const status = {
   KAKAO_LOGIN_SUCCESS: {
     status: 200,
     isSuccess: true,
-    code: 'AUTH2100',
+    code: 'AUTH2001',
     message: '카카오 로그인 완료!',
+  },
+  GOOGLE_LOGIN_SUCCESS: {
+    status: 200,
+    isSuccess: true,
+    code: 'AUTH2001',
+    message: '구글 로그인 완료!',
   },
   REGISTER_SUCCESS: {
     status: 200,
@@ -53,5 +59,36 @@ export const status = {
     isSuccess: true,
     code: 'PLACE2001',
     message: '방문 여부 정보 변경이 정상적으로 수행되었습니다',
+  },
+  //TOKEN
+  TOKEN_ERROR: {
+    status: 400,
+    isSuccess: false,
+    code: 'TOEKN4000',
+    message: '토큰 오류입니다',
+  },
+  TOKEN_EXPIRED: {
+    status: 400,
+    isSuccess: false,
+    code: 'TOEKN4001',
+    message: '토큰 시간초과',
+  },
+  TOKEN_INVAILD: {
+    status: 400,
+    isSuccess: false,
+    code: 'TOEKN4002',
+    message: '유효하지 않은 토큰',
+  },
+  TOKEN_SIGNITURE: {
+    status: 400,
+    isSuccess: false,
+    code: 'TOEKN4003',
+    message: '토큰 서명 오류',
+  //ERR
+  CONTROL_ERROR: {
+    status: 400,
+    isSuccess: false,
+    code: 'CTRL4000',
+    message: '잘못된 데이터입니다!',
   },
 }
