@@ -7,14 +7,14 @@ export const placeDto = {
 }
 
 export const showPreferencePlacesDTO = (placeList) => {
-  let result = [];
-  placeList.array.forEach(place => {
+  let result = []
+  placeList.array.forEach((place) => {
     result.push({
       id: place.id,
       name: place.name,
-      address: place.address
-    });
-  });
+      address: place.address,
+    })
+  })
 
-  return result;
+  return result
 }

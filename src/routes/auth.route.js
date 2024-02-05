@@ -8,6 +8,7 @@ import {
 
 export const authRouter = express.Router({ mergeParams: true })
 
+authRouter.get('/', authGoogleRedirectTest)
 authRouter.post('/login', authLogin)
 authRouter.get('/login', authJWT) //임시
 
