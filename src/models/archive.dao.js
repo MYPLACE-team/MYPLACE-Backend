@@ -2,7 +2,7 @@ import { pool } from '../../config/db.config'
 import { BaseError } from '../../config/error'
 import { status } from '../../config/response.status'
 import { selectUsername } from './user.sql'
-import { selectHashtag, insertHashtag } from './place.sql'
+import { selectHashtag, insertHashtag, selectPlacePreview } from './place.sql'
 import {
   insertArchive,
   insertArchiveFolder,
@@ -12,10 +12,13 @@ import {
   deleteArchiveFolder,
   deleteArchiveHashtag,
   deleteArchiveImage,
+  updateArchive,
+  selectArchiveDetail,
   selectArchive,
   updateArchive,
   selectFolder,
 } from './archive.sql'
+import { showArchiveDetailDTO } from '../dtos/archive.dto'
 
 export const addArchive = async (req) => {
   const conn = await pool.getConnection()
@@ -162,6 +165,57 @@ export const editArchive = async (archiveId, req) => {
 
     conn.release()
     return archiveId
+  } catch (error) {
+    console.log(error)
+    throw new BaseError(status.PARAMETER_IS_WRONG)
+  }
+}
+
+// 아카이브 글 상세보기
+export const showArchiveDetail = async (archiveId) => {
+  const userId = 1 //임시
+  const conn = await pool.getConnection()
+  console.log('archiveId', archiveId)
+
+  try {
+    const archiveResult = await conn.query(selectArchiveDetail, [archiveId])
+    const archiveData = archiveResult[0][0]
+
+    if (!archiveData) {
+      throw new BaseError(status.PARAMETER_IS_WRONG)
+    }
+
+    const placeResult = await conn.query(selectPlacePreview, [
+      userId,
+      archiveData.place_id,
+    ])
+    const placeData = placeResult[0][0]
+
+    const archive = {
+      id: archiveData.id,
+      title: archiveData.title,
+      createdAt: archiveData.created_at,
+      cost: archiveData.cost,
+      menu: archiveData.menu,
+      score: archiveData.score,
+      comment: archiveData.comment,
+      images: archiveData.image_urls,
+      count: archiveData.author_archive_count,
+    }
+
+    const place = {
+      id: placeData.id,
+      name: placeData.name,
+      address: placeData.address,
+      category: placeData.category_id,
+      isLike: placeData.isLike,
+      thumbnail: placeData.thumbnail_url,
+    }
+
+    const responseDTO = showArchiveDetailDTO(archive, place)
+
+    conn.release()
+    return responseDTO
   } catch (error) {
     console.log(error)
     throw new BaseError(status.PARAMETER_IS_WRONG)
