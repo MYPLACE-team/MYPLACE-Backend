@@ -15,7 +15,6 @@ import {
   updateArchive,
   selectArchiveDetail,
   selectArchive,
-  updateArchive,
   selectFolder,
 } from './archive.sql'
 import { showArchiveDetailDTO } from '../dtos/archive.dto'
