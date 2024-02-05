@@ -84,6 +84,7 @@ export const status = {
     isSuccess: false,
     code: 'TOEKN4003',
     message: '토큰 서명 오류',
+  },
   //ERR
   CONTROL_ERROR: {
     status: 400,
