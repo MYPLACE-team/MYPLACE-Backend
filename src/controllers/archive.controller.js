@@ -7,7 +7,22 @@ import {
   showArchiveDetail,
 } from '../models/archive.dao.js'
 
-import { showArchiveUserService } from '../services/archive.service.js'
+import { 
+  addArchiveFolderService,
+  showArchiveUserService 
+} from '../services/archive.service.js'
+
+// 아카이브 폴더 생성
+export const addArchiveFolderController = async (req, res) => {
+  try {
+    const folderId = await addArchiveFolderService(req.body)
+    console.log('폴더 생성')
+    res.status(201).json(response(status.SUCCESS, folderId))
+  } catch (err) {
+    console.error('Error in addArchiveFolderController', err)
+    res.send(response(status.BAD_REQUEST, null))
+  }
+}
 
 // 아카이브 글 작성
 export const addArchiveController = async (req, res, next) => {

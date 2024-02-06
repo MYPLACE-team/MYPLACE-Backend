@@ -1,4 +1,18 @@
 // 등록
+
+// 폴더 생성
+export const insertFolder = `
+    INSERT INTO folder
+    (name, thumbnail_img, date_start, date_end)
+    VALUES (?, ?, ?, ?)
+`
+
+// 유저 폴더 등록
+export const insertUserFolder = `
+    INSERT INTO user_folder
+    (user_id, folder_id)
+    VALUES (?, ?)
+    `
 // 아카이브 글 등록
 export const insertArchive = `
     INSERT INTO archive 
