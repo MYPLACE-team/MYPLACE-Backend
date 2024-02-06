@@ -8,6 +8,7 @@ import {
   insertHashtag,
   insertPlaceHashtag,
   insertPlaceImage,
+  updatePlaceThumbnail,
   selectAllPlace,
   deletePreferencePlace,
   selectPlace,
@@ -18,29 +19,29 @@ import {
 
 import { selectUser } from './auth.sql'
 
-export const addPlace = async (
-  lat,
-  lon,
-  name,
-  address,
-  category_id,
-  recDish,
-  closedDay,
-  service,
-  link,
-  hashtag,
-  images,
-  uploader,
-) => {
+export const addPlace = async (req) => {
+  const {
+    lat,
+    lon,
+    name,
+    address,
+    categoryId,
+    recDish,
+    closedDay,
+    service,
+    link,
+    hashtag,
+    images,
+  } = req
+
   let conn
+  const userId = 1 // 임시
   try {
     conn = await pool.getConnection()
     await conn.beginTransaction()
 
-    const hashtags = hashtag.split(',')
     const hashtagIds = []
-
-    for (const tag of hashtags) {
+    for (const tag of hashtag) {
       const [rows] = await conn.query(selectHashtag, [tag])
       if (rows.length > 0) {
         hashtagIds.push(rows[0].id)
@@ -55,18 +56,18 @@ export const addPlace = async (
       lon,
       name,
       address,
-      category_id,
+      categoryId,
       recDish,
       closedDay,
       service,
       link,
-      uploader, //임시
+      userId,
     ])
 
-    console.log('result', result)
     const placeId = result.insertId
 
-    console.log('placeId', placeId)
+    // 썸네일 이미지 추가
+    await conn.query(updatePlaceThumbnail, [images[0], placeId])
 
     // place_image 테이블에 데이터 추가
     for (const url of images) {
@@ -77,7 +78,6 @@ export const addPlace = async (
     for (const hashtagId of hashtagIds) {
       await conn.query(insertPlaceHashtag, [placeId, hashtagId])
     }
-
     await conn.commit()
     conn.release()
 
