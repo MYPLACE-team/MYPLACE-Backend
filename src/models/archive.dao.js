@@ -233,7 +233,7 @@ export const showArchive = async (userId, tag, page) => {
   const tag1 = tags[0] === undefined ? '' : tags[0]
   const tag2 = tags[1] === undefined ? '' : tags[1]
 
-  const params = [userId, userId, tag1, tag2, userId, p]
+  const params = [userId, userId, userId, tag1, tag2, userId, p]
 
   try {
     // 아카이브 글 가져오기
@@ -241,6 +241,7 @@ export const showArchive = async (userId, tag, page) => {
     if (tag === undefined) {
       console.log('tag0')
       archiveData = await conn.query(selectArchiveList, [
+        userId,
         userId,
         userId,
         userId,

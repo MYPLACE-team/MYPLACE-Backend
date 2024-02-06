@@ -65,7 +65,8 @@ const commonQuery = `
         a.*,
         p.*,
         CASE WHEN up.place_id IS NOT NULL THEN TRUE ELSE FALSE END AS isLike,
-        (SELECT COUNT(*) FROM archive WHERE user_id = ?) AS totalNum
+        (SELECT COUNT(*) FROM archive WHERE user_id = ?) AS totalNum,
+        (SELECT COUNT(*) FROM archive WHERE user_id = ?) > 10 AS hasNext
     FROM archive a
     JOIN place p ON a.place_id = p.id
     LEFT JOIN user_place up ON a.place_id = up.place_id AND up.user_id = ?
