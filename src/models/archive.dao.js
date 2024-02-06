@@ -17,6 +17,8 @@ import {
   selectArchive,
   selectFolder,
   selectArchiveList,
+  selectArchiveList1,
+  selectArchiveList2,
 } from './archive.sql'
 import { showArchiveDetailDTO, showArchiveDTO } from '../dtos/archive.dto'
 
@@ -229,21 +231,23 @@ export const showArchive = async (userId, tag, page) => {
   console.log('tag', tag)
   console.log('page', page)
   const p = (page - 1) * 10
-  const tags = tag.split(',')
-
-  const params = [
-    userId,
-    page,
-    userId,
-    tags ? tags[0] : null,
-    tags ? tags[1] : null,
-    tags ? tags[2] : null,
-    p,
-  ]
+  const tags = tag === undefined ? '' : tag.split(',')
+  const tag1 = tags[0] === undefined ? '' : tags[0]
+  const tag2 = tags[1] === undefined ? '' : tags[1]
   try {
-    const archiveResult = await conn.query(selectArchiveList, params)
-
-    const archiveData = archiveResult[0]
+    // 아카이브 글 가져오기
+    let archiveData
+    if (tag === undefined) {
+      console.log('tag0')
+      archiveData = await conn.query(selectArchiveList, userId)
+    } else if (tag2 === '') {
+      console.log('tag1')
+      archiveData = await conn.query(selectArchiveList1, [tag1, tag2, userId])
+    } else {
+      console.log('tag2')
+      archiveData = await conn.query(selectArchiveList2, [tag1, tag2, userId])
+    }
+    console.log('archiveData', archiveData)
 
     if (!archiveData) {
       throw new BaseError(status.PARAMETER_IS_WRONG)

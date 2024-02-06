@@ -61,34 +61,27 @@ export const selectFolder = `
 
 // 아카이브 글 목록 조회
 export const selectArchiveList = `
-    SELECT
-        archive.id,
-        CASE WHEN archive.user_id = ? THEN TRUE ELSE FALSE END AS isLike,
-        place.name,
-        place.address,
-        place.thumbnail_url,
-        place.category_id,
-        COUNT(archive.id) OVER () AS totalNum,
-        IF(COUNT(archive.id) > (? * 10), TRUE, FALSE) AS hasNext 
-    FROM 
-        archive
-    LEFT JOIN 
-        place ON archive.place_id = place.id
-    LEFT JOIN 
-        place_hashtag ON place.id = place_hashtag.place_id
-    LEFT JOIN 
-        hashtag ON place_hashtag.hashtag_id = hashtag.id
-    WHERE 
-    archive.user_id = ? 
-    AND (
-        (hashtag.name IS NULL) OR
-        (hashtag.name LIKE ?) OR
-        ((hashtag.name LIKE ?) AND (hashtag.name LIKE ?))
-        )
-    GROUP BY 
-        archive.id
-    HAVING 
-        COUNT(hashtag.id) BETWEEN 0 AND 2
-    ORDER BY 
-        archive.created_at DESC
-    LIMIT ?, 10`
+    SELECT * FROM archive WHERE user_id = ?`
+
+export const selectArchiveList1 = `
+    SELECT a.*
+    FROM archive a
+    JOIN archive_hashtag ah ON a.id = ah.archive_id
+    JOIN hashtag h ON ah.hashtag_id = h.id
+    WHERE (h.name = ? OR ? = '') 
+    AND a.user_id = ?
+    GROUP BY a.id
+`
+
+export const selectArchiveList2 = `
+    SELECT a.*
+    FROM archive a
+    JOIN archive_hashtag ah1 ON a.id = ah1.archive_id
+    JOIN hashtag h1 ON ah1.hashtag_id = h1.id
+    JOIN archive_hashtag ah2 ON a.id = ah2.archive_id
+    JOIN hashtag h2 ON ah2.hashtag_id = h2.id
+    WHERE h1.name = ? AND h2.name = ?
+    AND a.user_id = ?
+    GROUP BY a.id
+    HAVING COUNT(DISTINCT h1.name, h2.name) = 2
+`
