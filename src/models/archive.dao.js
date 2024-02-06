@@ -17,6 +17,7 @@ import {
   selectArchive,
   selectFolder,
   selectMonthlyArchivesCount,
+  selectUserArchiveCount,
 } from './archive.sql'
 import { selectUser } from './user.sql'
 import { showArchiveDetailDTO, showArchiveUserDTO } from '../dtos/archive.dto'
@@ -238,10 +239,12 @@ export const showArchiveUser = async (userId) => {
       year,
       month,
     ])
+    const archiveCount = await conn.query(selectUserArchiveCount, userId)
     const responseDTO = showArchiveUserDTO(
       user[0][0],
       folder[0][0],
       count[0][0].month_archive_count,
+      archiveCount[0][0].archive_count,
     )
 
     return responseDTO

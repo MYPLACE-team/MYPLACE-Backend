@@ -68,3 +68,10 @@ export const selectMonthlyArchivesCount = `
   FROM archive
   WHERE user_id = ? AND YEAR(created_at) = ? AND MONTH(created_at) = ?;
 `
+
+// 유저의 아카이브 글 조회
+export const selectUserArchiveCount = `
+    SELECT
+        COUNT(*) AS archive_count
+    FROM archive
+    WHERE user_id = ?`

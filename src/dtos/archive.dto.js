@@ -34,7 +34,7 @@ export const showArchiveDetailDTO = (archive, place) => {
   }
 }
 
-export const showArchiveUserDTO = (user, folder, count) => {
+export const showArchiveUserDTO = (user, folder, count, archiveCount) => {
   return {
     user: {
       userId: user.id,
@@ -42,6 +42,7 @@ export const showArchiveUserDTO = (user, folder, count) => {
       profileImg: user.profile_img,
       monthPlaceCount: count,
       level: user.level,
+      archiveCount: archiveCount,
     },
     folder: {
       folderId: folder.id,
