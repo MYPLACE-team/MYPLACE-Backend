@@ -46,7 +46,8 @@ export const showArchiveUserDTO = (user, folder, count) => {
     folder: {
       folderId: folder.id,
       name: folder.name,
-      period: null,
+      date_start: folder.date_start,
+      date_end: folder.date_end,
       image: folder.thumbnail_img,
     },
   }
