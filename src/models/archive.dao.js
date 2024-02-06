@@ -228,26 +228,35 @@ export const showArchiveDetail = async (archiveId) => {
 export const showArchive = async (userId, tag, page) => {
   const conn = await pool.getConnection()
 
-  console.log('tag', tag)
-  console.log('page', page)
   const p = (page - 1) * 10
   const tags = tag === undefined ? '' : tag.split(',')
   const tag1 = tags[0] === undefined ? '' : tags[0]
   const tag2 = tags[1] === undefined ? '' : tags[1]
+
   try {
     // 아카이브 글 가져오기
     let archiveData
     if (tag === undefined) {
       console.log('tag0')
-      archiveData = await conn.query(selectArchiveList, userId)
+      archiveData = await conn.query(selectArchiveList, userId, p)
     } else if (tag2 === '') {
       console.log('tag1')
-      archiveData = await conn.query(selectArchiveList1, [tag1, tag2, userId])
+      archiveData = await conn.query(selectArchiveList1, [
+        tag1,
+        tag2,
+        userId,
+        p,
+      ])
     } else {
       console.log('tag2')
-      archiveData = await conn.query(selectArchiveList2, [tag1, tag2, userId])
+      archiveData = await conn.query(selectArchiveList2, [
+        tag1,
+        tag2,
+        userId,
+        p,
+      ])
     }
-    console.log('archiveData', archiveData)
+    console.log('archiveData', archiveData[0][0])
 
     if (!archiveData) {
       throw new BaseError(status.PARAMETER_IS_WRONG)

@@ -61,7 +61,11 @@ export const selectFolder = `
 
 // 아카이브 글 목록 조회
 export const selectArchiveList = `
-    SELECT * FROM archive WHERE user_id = ?`
+    SELECT * 
+    FROM archive 
+    WHERE user_id = ?
+    LIMIT 10 OFFSET ?
+`
 
 export const selectArchiveList1 = `
     SELECT a.*
@@ -71,6 +75,7 @@ export const selectArchiveList1 = `
     WHERE (h.name = ? OR ? = '') 
     AND a.user_id = ?
     GROUP BY a.id
+    LIMIT 10 OFFSET ?
 `
 
 export const selectArchiveList2 = `
@@ -84,4 +89,5 @@ export const selectArchiveList2 = `
     AND a.user_id = ?
     GROUP BY a.id
     HAVING COUNT(DISTINCT h1.name, h2.name) = 2
+    LIMIT 10 OFFSET ?
 `
