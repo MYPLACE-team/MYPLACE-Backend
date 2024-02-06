@@ -238,10 +238,17 @@ export const showArchive = async (userId, tag, page) => {
     let archiveData
     if (tag === undefined) {
       console.log('tag0')
-      archiveData = await conn.query(selectArchiveList, userId, p)
+      archiveData = await conn.query(selectArchiveList, [
+        userId,
+        userId,
+        userId,
+        p,
+      ])
     } else if (tag2 === '') {
       console.log('tag1')
       archiveData = await conn.query(selectArchiveList1, [
+        userId,
+        userId,
         tag1,
         tag2,
         userId,
@@ -250,19 +257,21 @@ export const showArchive = async (userId, tag, page) => {
     } else {
       console.log('tag2')
       archiveData = await conn.query(selectArchiveList2, [
+        userId,
+        userId,
         tag1,
         tag2,
         userId,
         p,
       ])
     }
-    console.log('archiveData', archiveData[0][0])
+    console.log('archiveData', archiveData[0])
 
     if (!archiveData) {
       throw new BaseError(status.PARAMETER_IS_WRONG)
     }
 
-    const responseDTO = showArchiveDTO(archiveData)
+    const responseDTO = showArchiveDTO(archiveData[0])
 
     conn.release()
     return responseDTO

@@ -35,17 +35,23 @@ export const showArchiveDetailDTO = (archive, place) => {
 }
 
 export const showArchiveDTO = (archiveResult) => {
-  console.log(archiveResult)
   return {
     totalNum: archiveResult[0].totalNum,
     hasNext: archiveResult[0].hasNext === 1 ? true : false,
-    archive: archiveResult.map((item) => ({
-      archiveId: item.id,
-      isLike: item.isLike === 1 ? true : false,
-      name: item.name,
-      address: item.address,
-      thumnailImage: item.thumbnail_url,
-      categoryID: item.category_id,
+    list: archiveResult.map((item) => ({
+      archive: {
+        archiveId: item.id,
+        hashtag: item.hashtag,
+        score: item.score,
+      },
+      place: {
+        placeId: item.place_id,
+        name: item.name,
+        address: item.address,
+        categoryID: item.category_id,
+        thumbnail: item.thumbnail_url,
+        isLike: item.isLike === 1 ? true : false,
+      },
     })),
   }
 }
