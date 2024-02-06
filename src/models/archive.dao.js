@@ -239,7 +239,6 @@ export const showArchive = async (userId, tag, page) => {
     // 아카이브 글 가져오기
     let archiveData
     if (tag === undefined) {
-      console.log('tag0')
       archiveData = await conn.query(selectArchiveList, [
         userId,
         userId,
@@ -248,13 +247,10 @@ export const showArchive = async (userId, tag, page) => {
         p,
       ])
     } else if (tag2 === '') {
-      console.log('tag1')
       archiveData = await conn.query(selectArchiveList1, params)
     } else {
-      console.log('tag2')
       archiveData = await conn.query(selectArchiveList2, params)
     }
-    console.log('archiveData', archiveData[0])
 
     if (!archiveData) {
       throw new BaseError(status.PARAMETER_IS_WRONG)

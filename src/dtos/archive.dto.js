@@ -35,13 +35,14 @@ export const showArchiveDetailDTO = (archive, place) => {
 }
 
 export const showArchiveDTO = (archiveResult) => {
+  const hashtag = archiveResult[0].hashtags.split(',')
   return {
     totalNum: archiveResult[0].totalNum,
     hasNext: archiveResult[0].hasNext === 1 ? true : false,
     list: archiveResult.map((item) => ({
       archive: {
         archiveId: item.id,
-        hashtag: item.hashtag,
+        hashtag: hashtag,
         score: item.score,
       },
       place: {

@@ -62,14 +62,17 @@ export const selectFolder = `
 // 아카이브 글 목록 조회
 const commonQuery = `
     SELECT 
-        a.*,
-        p.*,
+        a.id, a.score,
+        p.name, p.address, p.category_id, p.thumbnail_url, p.id AS place_id,
         CASE WHEN up.place_id IS NOT NULL THEN TRUE ELSE FALSE END AS isLike,
         (SELECT COUNT(*) FROM archive WHERE user_id = ?) AS totalNum,
-        (SELECT COUNT(*) FROM archive WHERE user_id = ?) > 10 AS hasNext
+        (SELECT COUNT(*) FROM archive WHERE user_id = ?) > 10 AS hasNext,
+        GROUP_CONCAT(DISTINCT h1.name) AS hashtags
     FROM archive a
     JOIN place p ON a.place_id = p.id
     LEFT JOIN user_place up ON a.place_id = up.place_id AND up.user_id = ?
+    LEFT JOIN archive_hashtag ah1 ON a.id = ah1.archive_id
+    LEFT JOIN hashtag h1 ON ah1.hashtag_id = h1.id
 `
 
 export const selectArchiveList = `
