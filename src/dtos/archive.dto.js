@@ -33,3 +33,21 @@ export const showArchiveDetailDTO = (archive, place) => {
     },
   }
 }
+
+export const showArchiveUserDTO = (user, folder, count) => {
+  return {
+    user: {
+      userId: user.id,
+      username: user.username,
+      profileImg: user.profile_img,
+      monthPlaceCount: count,
+      level: user.level,
+    },
+    folder: {
+      folderId: folder.id,
+      name: folder.name,
+      period: null,
+      image: folder.thumbnail_img,
+    },
+  }
+}

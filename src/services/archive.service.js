@@ -1,23 +1,35 @@
-import { addArchive, removeArchive } from '../models/archive.dao'
+import {
+  addArchive,
+  removeArchive,
+  showArchiveUser,
+} from '../models/archive.dao'
 
 export const addArchiveService = async (req) => {
-  let result
   try {
-    result = await addArchive(req)
+    const result = await addArchive(req)
+    return result
   } catch (err) {
     console.error(err)
+    throw new BaseError(status.PARAMETER_IS_WRONG)
   }
-
-  return result
 }
 
 export const removeArchiveService = async (req) => {
-  let result
   try {
-    result = await removeArchive(req)
+    const result = await removeArchive(req)
+    return result
   } catch (err) {
     console.error(err)
+    throw new BaseError(status.PARAMETER_IS_WRONG)
   }
+}
 
-  return result
+export const showArchiveUserService = async (req) => {
+  try {
+    const result = await showArchiveUser(req)
+    return result
+  } catch (err) {
+    console.error(err)
+    throw new BaseError(status.PARAMETER_IS_WRONG)
+  }
 }

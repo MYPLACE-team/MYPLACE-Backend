@@ -58,3 +58,13 @@ export const selectArchive = `
 
 export const selectFolder = `
     SELECT * FROM folder WHERE id = ?`
+
+// 유저의 폴더 정보 조회
+export const selectUserFolder = `
+    SELECT * FROM folder WHERE user_id = ?`
+
+export const selectMonthlyArchivesCount = `
+  SELECT COUNT(*) AS month_archive_count
+  FROM archive
+  WHERE user_id = ? AND YEAR(created_at) = ? AND MONTH(created_at) = ?;
+`

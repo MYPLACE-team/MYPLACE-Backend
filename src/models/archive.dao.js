@@ -16,8 +16,10 @@ import {
   selectArchiveDetail,
   selectArchive,
   selectFolder,
+  selectMonthlyArchivesCount,
 } from './archive.sql'
-import { showArchiveDetailDTO } from '../dtos/archive.dto'
+import { selectUser } from './user.sql'
+import { showArchiveDetailDTO, showArchiveUserDTO } from '../dtos/archive.dto'
 
 export const addArchive = async (req) => {
   const conn = await pool.getConnection()
@@ -214,6 +216,34 @@ export const showArchiveDetail = async (archiveId) => {
     const responseDTO = showArchiveDetailDTO(archive, place)
 
     conn.release()
+    return responseDTO
+  } catch (error) {
+    console.log(error)
+    throw new BaseError(status.PARAMETER_IS_WRONG)
+  }
+}
+
+export const showArchiveUser = async (userId) => {
+  const conn = await pool.getConnection()
+
+  const date = new Date()
+  const year = date.getFullYear()
+  const month = date.getMonth() + 1
+
+  try {
+    const user = await conn.query(selectUser, userId)
+    const folder = await conn.query(selectFolder, userId)
+    const count = await conn.query(selectMonthlyArchivesCount, [
+      userId,
+      year,
+      month,
+    ])
+    const responseDTO = showArchiveUserDTO(
+      user[0][0],
+      folder[0][0],
+      count[0][0].month_archive_count,
+    )
+
     return responseDTO
   } catch (error) {
     console.log(error)
