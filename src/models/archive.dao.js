@@ -16,8 +16,9 @@ import {
   selectArchiveDetail,
   selectArchive,
   selectFolder,
+  selectArchiveList,
 } from './archive.sql'
-import { showArchiveDetailDTO } from '../dtos/archive.dto'
+import { showArchiveDetailDTO, showArchiveDTO } from '../dtos/archive.dto'
 
 export const addArchive = async (req) => {
   const conn = await pool.getConnection()
@@ -212,6 +213,43 @@ export const showArchiveDetail = async (archiveId) => {
     }
 
     const responseDTO = showArchiveDetailDTO(archive, place)
+
+    conn.release()
+    return responseDTO
+  } catch (error) {
+    console.log(error)
+    throw new BaseError(status.PARAMETER_IS_WRONG)
+  }
+}
+
+// 아카이브 글 리스트
+export const showArchive = async (userId, tag, page) => {
+  const conn = await pool.getConnection()
+
+  console.log('tag', tag)
+  console.log('page', page)
+  const p = (page - 1) * 10
+  const tags = tag.split(',')
+
+  const params = [
+    userId,
+    page,
+    userId,
+    tags ? tags[0] : null,
+    tags ? tags[1] : null,
+    tags ? tags[2] : null,
+    p,
+  ]
+  try {
+    const archiveResult = await conn.query(selectArchiveList, params)
+
+    const archiveData = archiveResult[0]
+
+    if (!archiveData) {
+      throw new BaseError(status.PARAMETER_IS_WRONG)
+    }
+
+    const responseDTO = showArchiveDTO(archiveData)
 
     conn.release()
     return responseDTO

@@ -58,3 +58,37 @@ export const selectArchive = `
 
 export const selectFolder = `
     SELECT * FROM folder WHERE id = ?`
+
+// 아카이브 글 목록 조회
+export const selectArchiveList = `
+    SELECT
+        archive.id,
+        CASE WHEN archive.user_id = ? THEN TRUE ELSE FALSE END AS isLike,
+        place.name,
+        place.address,
+        place.thumbnail_url,
+        place.category_id,
+        COUNT(archive.id) OVER () AS totalNum,
+        IF(COUNT(archive.id) > (? * 10), TRUE, FALSE) AS hasNext 
+    FROM 
+        archive
+    LEFT JOIN 
+        place ON archive.place_id = place.id
+    LEFT JOIN 
+        place_hashtag ON place.id = place_hashtag.place_id
+    LEFT JOIN 
+        hashtag ON place_hashtag.hashtag_id = hashtag.id
+    WHERE 
+    archive.user_id = ? 
+    AND (
+        (hashtag.name IS NULL) OR
+        (hashtag.name LIKE ?) OR
+        ((hashtag.name LIKE ?) AND (hashtag.name LIKE ?))
+        )
+    GROUP BY 
+        archive.id
+    HAVING 
+        COUNT(hashtag.id) BETWEEN 0 AND 2
+    ORDER BY 
+        archive.created_at DESC
+    LIMIT ?, 10`

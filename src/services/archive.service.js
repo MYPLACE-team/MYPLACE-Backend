@@ -1,4 +1,4 @@
-import { addArchive, removeArchive } from '../models/archive.dao'
+import { addArchive, removeArchive, showArchive } from '../models/archive.dao'
 
 export const addArchiveService = async (req) => {
   let result
@@ -20,4 +20,14 @@ export const removeArchiveService = async (req) => {
   }
 
   return result
+}
+
+export const showArchiveService = async (userId, tag, page) => {
+  try {
+    const result = await showArchive(userId, tag, page)
+    return result
+  } catch (err) {
+    console.error(err)
+    throw new BaseError(status.PARAMETER_IS_WRONG)
+  }
 }

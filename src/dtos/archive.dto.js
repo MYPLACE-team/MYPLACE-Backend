@@ -33,3 +33,19 @@ export const showArchiveDetailDTO = (archive, place) => {
     },
   }
 }
+
+export const showArchiveDTO = (archiveResult) => {
+  console.log(archiveResult)
+  return {
+    totalNum: archiveResult[0].totalNum,
+    hasNext: archiveResult[0].hasNext === 1 ? true : false,
+    archive: archiveResult.map((item) => ({
+      archiveId: item.archiveId,
+      isLike: item.isLike,
+      name: item.name,
+      address: item.address,
+      thumnailImage: item.thumbnailImage,
+      categoryID: item.categoryID,
+    })),
+  }
+}
