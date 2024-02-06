@@ -40,12 +40,12 @@ export const showArchiveDTO = (archiveResult) => {
     totalNum: archiveResult[0].totalNum,
     hasNext: archiveResult[0].hasNext === 1 ? true : false,
     archive: archiveResult.map((item) => ({
-      archiveId: item.archiveId,
-      isLike: item.isLike,
+      archiveId: item.id,
+      isLike: item.isLike === 1 ? true : false,
       name: item.name,
       address: item.address,
-      thumnailImage: item.thumbnailImage,
-      categoryID: item.categoryID,
+      thumnailImage: item.thumbnail_url,
+      categoryID: item.category_id,
     })),
   }
 }

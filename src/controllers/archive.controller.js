@@ -61,7 +61,7 @@ export const showArchiveDetailController = async (req, res, next) => {
 
 // 아카이브 글 목록 조회/검색
 export const showArchiveController = async (req, res, next) => {
-  const userId = 0 // 임시
+  const userId = 1 // 임시
   const { tag } = req.query
   const { page } = req.query
 
