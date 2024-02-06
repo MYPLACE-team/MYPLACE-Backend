@@ -60,7 +60,7 @@ export const selectFolder = `
     SELECT * FROM folder WHERE id = ?`
 
 // 아카이브 글 목록 조회
-export const selectArchiveList = `
+const commonQuery = `
     SELECT 
         a.*,
         p.*,
@@ -69,19 +69,16 @@ export const selectArchiveList = `
     FROM archive a
     JOIN place p ON a.place_id = p.id
     LEFT JOIN user_place up ON a.place_id = up.place_id AND up.user_id = ?
+`
+
+export const selectArchiveList = `
+    ${commonQuery}
     WHERE a.user_id = ?
     LIMIT 10 OFFSET ?
 `
 
 export const selectArchiveList1 = `
-    SELECT 
-        a.*,
-        p.*,
-        CASE WHEN up.place_id IS NOT NULL THEN TRUE ELSE FALSE END AS isLike,
-        (SELECT COUNT(*) FROM archive WHERE user_id = ?) AS totalNum
-    FROM archive a
-    JOIN place p ON a.place_id = p.id
-    LEFT JOIN user_place up ON a.place_id = up.place_id AND up.user_id = ?
+    ${commonQuery}
     JOIN archive_hashtag ah ON a.id = ah.archive_id
     JOIN hashtag h ON ah.hashtag_id = h.id
     WHERE (h.name = ? OR ? = '') 
@@ -91,14 +88,7 @@ export const selectArchiveList1 = `
 `
 
 export const selectArchiveList2 = `
-    SELECT 
-        a.*,
-        p.*,
-        CASE WHEN up.place_id IS NOT NULL THEN TRUE ELSE FALSE END AS isLike,
-        (SELECT COUNT(*) FROM archive WHERE user_id = ?) AS totalNum
-    FROM archive a
-    JOIN place p ON a.place_id = p.id
-    LEFT JOIN user_place up ON a.place_id = up.place_id AND up.user_id = ?
+    ${commonQuery}
     JOIN archive_hashtag ah1 ON a.id = ah1.archive_id
     JOIN hashtag h1 ON ah1.hashtag_id = h1.id
     JOIN archive_hashtag ah2 ON a.id = ah2.archive_id

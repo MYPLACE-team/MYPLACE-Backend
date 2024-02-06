@@ -233,6 +233,8 @@ export const showArchive = async (userId, tag, page) => {
   const tag1 = tags[0] === undefined ? '' : tags[0]
   const tag2 = tags[1] === undefined ? '' : tags[1]
 
+  const params = [userId, userId, tag1, tag2, userId, p]
+
   try {
     // 아카이브 글 가져오기
     let archiveData
@@ -246,24 +248,10 @@ export const showArchive = async (userId, tag, page) => {
       ])
     } else if (tag2 === '') {
       console.log('tag1')
-      archiveData = await conn.query(selectArchiveList1, [
-        userId,
-        userId,
-        tag1,
-        tag2,
-        userId,
-        p,
-      ])
+      archiveData = await conn.query(selectArchiveList1, params)
     } else {
       console.log('tag2')
-      archiveData = await conn.query(selectArchiveList2, [
-        userId,
-        userId,
-        tag1,
-        tag2,
-        userId,
-        p,
-      ])
+      archiveData = await conn.query(selectArchiveList2, params)
     }
     console.log('archiveData', archiveData[0])
 
