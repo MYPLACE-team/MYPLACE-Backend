@@ -35,5 +35,6 @@ export const showPlaceDetailDTO = (placeData, hashtag, image) => {
     images: image,
     writer: place.uploader_username,
     updatedAt: place.updated_at ? place.updated_at : place.created_at,
+    isLike: place.isLike ? true : false,
   }
 }
