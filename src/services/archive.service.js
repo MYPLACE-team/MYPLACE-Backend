@@ -1,4 +1,4 @@
-import { addArchive } from '../models/archive.dao'
+import { addArchive, removeArchive } from '../models/archive.dao'
 
 export const addArchiveService = async (req) => {
   let result
@@ -8,6 +8,16 @@ export const addArchiveService = async (req) => {
     console.error(err)
   }
 
-  console.log(result)
+  return result
+}
+
+export const removeArchiveService = async (req) => {
+  let result
+  try {
+    result = await removeArchive(req)
+  } catch (err) {
+    console.error(err)
+  }
+
   return result
 }
