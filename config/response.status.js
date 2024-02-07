@@ -54,6 +54,13 @@ export const status = {
     code: 'PLACE2000',
     message: '관심 장소 조회가 정상적으로 수행되었습니다',
   },
+  //user
+  USER_NOT_EXISTS: {
+    status: 404,
+    isSuccess: false,
+    code: 'USER4000',
+    message: '존재하지 않는 유저입니다.',
+  },
   //ERR
   CONTROL_ERROR: {
     status: 400,
