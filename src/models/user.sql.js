@@ -5,3 +5,7 @@ export const selectUsername = `
 export const getUserById = `SELECT * FROM user WHERE id = ?`
 export const getArchiveById = `SELECT * FROM archive WHERE user_id = ?`
 export const CountPlaceById = `SELECT COUNT(*) cnt FROM user_place WHERE user_id = ?`
+
+export const selectUser = `
+    SELECT * FROM user WHERE id = ?
+    `
