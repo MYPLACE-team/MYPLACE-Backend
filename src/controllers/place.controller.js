@@ -7,6 +7,7 @@ import {
 import {
   showPreferencePlacesService,
   searchPlaceService,
+  showPlaceDetailService,
   addPlaceService,
   toggleVisitedService,
 } from '../services/place.service.js'
@@ -107,6 +108,22 @@ export const searchPlaceController = async (req, res) => {
     res.status(200).json(response(status.SUCCESS, result))
   } catch (err) {
     console.error('Error in searchPlaceController:', err)
+    res.send(response(status.BAD_REQUEST, null))
+  }
+}
+
+// 마플 장소 상세
+export const showPlaceDetailController = async (req, res) => {
+  console.log('마플 장소 상세')
+  const { placeId } = req.params
+  const userId = 1 //임시
+
+  try {
+    const placeDetail = await showPlaceDetailService(placeId, userId)
+
+    res.status(200).json(response(status.SUCCESS, placeDetail))
+  } catch (err) {
+    console.error('Error in showPlaceDetailController:', err)
     res.send(response(status.BAD_REQUEST, null))
   }
 }

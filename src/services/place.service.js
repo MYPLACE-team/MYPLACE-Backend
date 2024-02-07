@@ -4,6 +4,7 @@ import { showPreferencePlacesDTO } from '../dtos/place.dto'
 import {
   getPreferencePlacesList,
   getSearchPlace,
+  getPlaceDetail,
   addPlace,
   toggleVisited,
 } from '../models/place.dao'
@@ -28,6 +29,17 @@ export const searchPlaceService = async (req) => {
     const placeList = await getSearchPlace(req)
 
     return placeList
+  } catch (err) {
+    console.error(err)
+    throw new BaseError(status.PARAMETER_IS_WRONG)
+  }
+}
+
+export const showPlaceDetailService = async (placeId, userId) => {
+  try {
+    const placeDetail = await getPlaceDetail(placeId, userId)
+
+    return placeDetail
   } catch (err) {
     console.error(err)
     throw new BaseError(status.PARAMETER_IS_WRONG)
