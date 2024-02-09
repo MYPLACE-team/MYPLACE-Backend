@@ -35,6 +35,7 @@ export const showArchiveDetailDTO = (archive, place) => {
 }
 
 export const showArchiveUserDTO = (user, folder, count, archiveCount) => {
+  console.log(folder)
   return {
     user: {
       userId: user.id,
@@ -44,12 +45,6 @@ export const showArchiveUserDTO = (user, folder, count, archiveCount) => {
       level: user.level,
       archiveCount: archiveCount,
     },
-    folder: {
-      folderId: folder.id,
-      name: folder.name,
-      date_start: folder.date_start,
-      date_end: folder.date_end,
-      image: folder.thumbnail_img,
-    },
+    folder,
   }
 }
