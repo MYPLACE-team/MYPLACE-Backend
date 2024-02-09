@@ -249,8 +249,6 @@ export const showArchiveUser = async (userId) => {
       archiveCount[0][0].archive_count,
     )
 
-    console.log('folder', folder)
-
     return responseDTO
   } catch (error) {
     console.log(error)
