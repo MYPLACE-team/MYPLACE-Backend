@@ -54,6 +54,13 @@ export const status = {
     code: 'PLACE2000',
     message: '관심 장소 조회가 정상적으로 수행되었습니다',
   },
+  //user
+  USER_NOT_EXISTS: {
+    status: 404,
+    isSuccess: false,
+    code: 'USER4000',
+    message: '존재하지 않는 유저입니다.',
+  },
   PLACE_VISITED_TOGGLE_SUCCESS: {
     status: 200,
     isSuccess: true,
@@ -91,5 +98,11 @@ export const status = {
     isSuccess: false,
     code: 'CTRL4000',
     message: '잘못된 데이터입니다!',
+  },
+  NOT_FOUND: {
+    status: 404,
+    isSuccess: false,
+    code: 'PAGE4000',
+    message: '요청한 정보를 찾을 수 없습니다.',
   },
 }
