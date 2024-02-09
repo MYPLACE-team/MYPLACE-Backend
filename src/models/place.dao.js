@@ -8,39 +8,44 @@ import {
   insertHashtag,
   insertPlaceHashtag,
   insertPlaceImage,
+  updatePlaceThumbnail,
   selectAllPlace,
   deletePreferencePlace,
   selectPlace,
   insertPreferencePlace,
   selectSearchPlace,
-  toggleVisitedAttribute
+  selectPlaceImage,
+  selectPlaceHashtag,
+  selectPlaceDetail,
+  toggleVisitedAttribute,
 } from './place.sql'
+import { showPlaceDetailDTO } from '../dtos/place.dto'
 
 import { selectUser } from './auth.sql'
 
-export const addPlace = async (
-  lat,
-  lon,
-  name,
-  address,
-  category_id,
-  recDish,
-  closedDay,
-  service,
-  link,
-  hashtag,
-  images,
-  uploader,
-) => {
+export const addPlace = async (req) => {
+  const {
+    lat,
+    lon,
+    name,
+    address,
+    categoryId,
+    recDish,
+    closedDay,
+    service,
+    link,
+    hashtag,
+    images,
+  } = req
+
   let conn
+  const userId = 1 // 임시
   try {
     conn = await pool.getConnection()
     await conn.beginTransaction()
 
-    const hashtags = hashtag.split(',')
     const hashtagIds = []
-
-    for (const tag of hashtags) {
+    for (const tag of hashtag) {
       const [rows] = await conn.query(selectHashtag, [tag])
       if (rows.length > 0) {
         hashtagIds.push(rows[0].id)
@@ -55,18 +60,18 @@ export const addPlace = async (
       lon,
       name,
       address,
-      category_id,
+      categoryId,
       recDish,
       closedDay,
       service,
       link,
-      uploader, //임시
+      userId,
     ])
 
-    console.log('result', result)
     const placeId = result.insertId
 
-    console.log('placeId', placeId)
+    // 썸네일 이미지 추가
+    await conn.query(updatePlaceThumbnail, [images[0], placeId])
 
     // place_image 테이블에 데이터 추가
     for (const url of images) {
@@ -77,7 +82,6 @@ export const addPlace = async (
     for (const hashtagId of hashtagIds) {
       await conn.query(insertPlaceHashtag, [placeId, hashtagId])
     }
-
     await conn.commit()
     conn.release()
 
@@ -194,17 +198,45 @@ export const getSearchPlace = async (req) => {
   return rows
 }
 
+export const getPlaceDetail = async (placeId, userId) => {
+  try {
+    const conn = await pool.getConnection()
+
+    const place = await conn.query(selectPlace, placeId)
+    if (place[0].length === 0) {
+      throw new BaseError(status.PLACE_IS_NOT_EXIST)
+    }
+
+    const placeData = await conn.query(selectPlaceDetail, [userId, placeId])
+    const hashtag = await conn.query(selectPlaceHashtag, placeId)
+    const images = await conn.query(selectPlaceImage, placeId)
+    const formattedHashtags = hashtag[0].map((tag) => tag.name)
+    const fotmattedImages = images[0].map((image) => image.url)
+
+    const result = showPlaceDetailDTO(
+      placeData[0],
+      formattedHashtags,
+      fotmattedImages,
+    )
+    conn.release()
+    return result
+  } catch (err) {
+    console.error(err)
+    throw new BaseError(status.PARAMETER_IS_WRONG)
+  }
+}
+
 export const toggleVisited = async (req) => {
-  try{
+  try {
     const conn = await pool.getConnection()
     const [result] = await pool.query(toggleVisitedAttribute, [
       req.user_id,
-      req.place_id
+      req.place_id,
     ])
     conn.release()
 
     return result.changedRows
-  } catch (err){
-    console.error(err);
+  } catch (err) {
+    console.error(err)
   }
 }

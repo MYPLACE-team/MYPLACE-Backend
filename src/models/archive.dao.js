@@ -4,6 +4,8 @@ import { status } from '../../config/response.status'
 import { selectUsername } from './user.sql'
 import { selectHashtag, insertHashtag, selectPlacePreview } from './place.sql'
 import {
+  insertFolder,
+  insertUserFolder,
   insertArchive,
   insertArchiveFolder,
   insertArchiveHashtag,
@@ -23,6 +25,36 @@ import {
 } from './archive.sql'
 import { selectUser } from './user.sql'
 import { showArchiveDetailDTO, showArchiveUserDTO } from '../dtos/archive.dto'
+
+export const addArchiveFolder = async (req) => {
+  const conn = await pool.getConnection()
+  const userId = 1 // 임시
+
+  try{
+    const [insertFolderResult] = await conn.query(insertFolder, [
+      req.name,
+      req.thumbnailImage,
+      req.start,
+      req.end
+    ])
+
+    console.log(insertFolderResult)
+    const folderId = insertFolderResult.insertId
+    console.log(folderId)
+
+    const userFolderResult = await conn.query(insertUserFolder, [
+      userId,
+      folderId
+    ])
+
+    console.log(userFolderResult)
+
+    return folderId
+  } catch (err){
+    console.log(err)
+    throw new BaseError(status.PARAMETER_IS_WRONG)
+  }
+}
 
 export const addArchive = async (req) => {
   const conn = await pool.getConnection()

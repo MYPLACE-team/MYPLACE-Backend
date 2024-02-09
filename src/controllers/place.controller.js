@@ -1,48 +1,21 @@
 import { status } from '../../config/response.status.js'
 import { response } from '../../config/response.js'
 import {
-  addPlace,
   cancelPreferencePlace,
   addPreferencePlace,
 } from '../models/place.dao.js'
 import {
   showPreferencePlacesService,
   searchPlaceService,
-  toggleVisitedService
+  showPlaceDetailService,
+  addPlaceService,
+  toggleVisitedService,
 } from '../services/place.service.js'
 
 // 장소 등록
 export const addPlaceController = async (req, res) => {
-  const {
-    lat,
-    lon,
-    name,
-    address,
-    category_id,
-    recDish,
-    closedDay,
-    service,
-    link,
-    hashtag,
-    images,
-    uploader, //임시
-  } = req.body
-
   try {
-    const placeId = await addPlace(
-      lat,
-      lon,
-      name,
-      address,
-      category_id,
-      recDish,
-      closedDay,
-      service,
-      link,
-      hashtag,
-      images,
-      uploader, //임시
-    )
+    const placeId = await addPlaceService(req.body)
 
     res.status(201).json(response(status.SUCCESS, { placeId }))
   } catch (error) {
@@ -62,7 +35,7 @@ export const showPreferencePlacesController = async (req, res) => {
     user_id,
     category,
     sort,
-    visit
+    visit,
   }
 
   try {
@@ -139,6 +112,22 @@ export const searchPlaceController = async (req, res) => {
   }
 }
 
+// 마플 장소 상세
+export const showPlaceDetailController = async (req, res) => {
+  console.log('마플 장소 상세')
+  const { placeId } = req.params
+  const userId = 1 //임시
+
+  try {
+    const placeDetail = await showPlaceDetailService(placeId, userId)
+
+    res.status(200).json(response(status.SUCCESS, placeDetail))
+  } catch (err) {
+    console.error('Error in showPlaceDetailController:', err)
+    res.send(response(status.BAD_REQUEST, null))
+  }
+}
+
 // 가본 장소, 안가본 장소 변경
 export const toggleVisitedController = async (req, res) => {
   console.log('가본 장소/안가본 장소 변경')
@@ -147,13 +136,13 @@ export const toggleVisitedController = async (req, res) => {
 
   const data = {
     user_id,
-    place_id
+    place_id,
   }
 
   const result = await toggleVisitedService(data)
 
-  if (result === 1){
-    res.send(response(status.PLACE_VISITED_TOGGLE_SUCCESS, "Success"))
+  if (result === 1) {
+    res.send(response(status.PLACE_VISITED_TOGGLE_SUCCESS, 'Success'))
   }
 
   res.send(response(status.BAD_REQUEST, null))

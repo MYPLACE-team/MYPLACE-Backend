@@ -1,7 +1,13 @@
 import { BaseError } from '../../config/error'
 import { status } from '../../config/response.status'
-import { showPreferencePlacesDTO, } from '../dtos/place.dto'
-import { getPreferencePlacesList, getSearchPlace, toggleVisited } from '../models/place.dao'
+import { showPreferencePlacesDTO } from '../dtos/place.dto'
+import {
+  getPreferencePlacesList,
+  getSearchPlace,
+  getPlaceDetail,
+  addPlace,
+  toggleVisited,
+} from '../models/place.dao'
 
 export const showPreferencePlacesService = async (req) => {
   try {
@@ -29,12 +35,34 @@ export const searchPlaceService = async (req) => {
   }
 }
 
+export const showPlaceDetailService = async (placeId, userId) => {
+  try {
+    const placeDetail = await getPlaceDetail(placeId, userId)
+
+    return placeDetail
+  } catch (err) {
+    console.error(err)
+    throw new BaseError(status.PARAMETER_IS_WRONG)
+  }
+}
+
+export const addPlaceService = async (req) => {
+  try {
+    const result = await addPlace(req)
+    console.log(result)
+    return result
+  } catch (err) {
+    console.error(err)
+    throw new BaseError(status.PARAMETER_IS_WRONG)
+  }
+}
+
 export const toggleVisitedService = async (req) => {
-  try{
+  try {
     const result = await toggleVisited(req)
 
     return result
-  } catch (err){
+  } catch (err) {
     console.error(err)
     throw new BaseError(status.PARAMETER_IS_WRONG)
   }

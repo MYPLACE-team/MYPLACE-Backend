@@ -1,5 +1,6 @@
 import express from 'express'
 import {
+  addArchiveFolderController,
   addArchiveController,
   removeArchiveController,
   editArchiveController,
@@ -12,4 +13,4 @@ archiveRouter.post('/', addArchiveController)
 archiveRouter.delete('/:archiveId', removeArchiveController)
 archiveRouter.put('/:archiveId', editArchiveController)
 archiveRouter.get('/:archiveId', showArchiveDetailController)
-archiveRouter.get('/', showArchiveUserController)
+archiveRouter.post('/folder', addArchiveFolderController)
