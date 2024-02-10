@@ -44,8 +44,10 @@ export const addPlace = async (req) => {
     conn = await pool.getConnection()
     await conn.beginTransaction()
 
+    const validHashtags = hashtag.filter((tag) => tag.trim() !== '')
+
     const hashtagIds = []
-    for (const tag of hashtag) {
+    for (const tag of validHashtags) {
       const [rows] = await conn.query(selectHashtag, [tag])
       if (rows.length > 0) {
         hashtagIds.push(rows[0].id)
@@ -62,8 +64,8 @@ export const addPlace = async (req) => {
       address,
       categoryId,
       recDish,
-      closedDay,
-      service,
+      closedDay.join(','),
+      service.join(','),
       link,
       userId,
     ])
