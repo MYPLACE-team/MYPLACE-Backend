@@ -29,6 +29,12 @@ export const status = {
     code: 'AUTH2001',
     message: '구글 로그인 완료!',
   },
+  TOKEN_LOGIN_SUCCESS: {
+    status: 200,
+    isSuccess: true,
+    code: 'AUTH2001',
+    message: '토큰 로그인 완료!',
+  },
   REGISTER_SUCCESS: {
     status: 200,
     isSuccess: true,
@@ -71,7 +77,7 @@ export const status = {
     status: 400,
     isSuccess: false,
     code: 'TOEKN4002',
-    message: '유효하지 않은 토큰',
+    message: '유효하지 않은 토큰. 재로그인 필요',
   },
   TOKEN_SIGNITURE: {
     status: 400,

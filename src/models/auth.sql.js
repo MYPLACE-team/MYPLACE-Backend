@@ -17,4 +17,4 @@ export const insertOauthRefreshSql =
   'UPDATE oauthid SET access_token = ? WHERE user_id = ?;'
 
 export const selectUser = `
-    SELECT * FROM user WHERE id = ?`
+    SELECT * FROM user WHERE id = ?;`
