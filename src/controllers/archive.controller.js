@@ -78,9 +78,9 @@ export const showArchiveDetailController = async (req, res, next) => {
 
 // 아카이브 유저정보 조회
 export const showArchiveUserController = async (req, res, next) => {
-  const archiveId = 1 // 임시
+  const userId = 1 // 임시
   try {
-    const result = await showArchiveUserService(archiveId)
+    const result = await showArchiveUserService(userId)
     console.log('아카이브 유저정보 조회 성공')
     res.status(200).json(response(status.SUCCESS, result))
   } catch (error) {

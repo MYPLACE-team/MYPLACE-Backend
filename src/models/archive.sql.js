@@ -75,10 +75,21 @@ export const selectFolder = `
 
 // 유저의 폴더 정보 조회
 export const selectUserFolder = `
-    SELECT * FROM folder WHERE user_id = ?`
+    SELECT folder_id, name, thumbnail_img, date_start, date_end, user_id
+    FROM folder
+    JOIN user_folder ON user_folder.folder_id = folder.id
+    WHERE user_folder.user_id = ?
+    ORDER BY folder.id DESC`
 
 export const selectMonthlyArchivesCount = `
   SELECT COUNT(*) AS month_archive_count
   FROM archive
   WHERE user_id = ? AND YEAR(created_at) = ? AND MONTH(created_at) = ?;
 `
+
+// 유저의 아카이브 글 조회
+export const selectUserArchiveCount = `
+    SELECT
+        COUNT(*) AS archive_count
+    FROM archive
+    WHERE user_id = ?`

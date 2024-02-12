@@ -1,4 +1,4 @@
-import { BaseError } from '../../config/error';
+import { BaseError } from '../../config/error'
 import { status } from '../../config/response.status'
 import {
   addArchiveFolder,
@@ -8,9 +8,9 @@ import {
 } from '../models/archive.dao'
 
 export const addArchiveFolderService = async (req) => {
-  try{
-    const result = await addArchiveFolder(req);
-    return result 
+  try {
+    const result = await addArchiveFolder(req)
+    return result
   } catch (err) {
     console.error(err)
   }
