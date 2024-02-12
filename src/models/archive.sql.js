@@ -1,4 +1,18 @@
 // 등록
+
+// 폴더 생성
+export const insertFolder = `
+    INSERT INTO folder
+    (name, thumbnail_img, date_start, date_end)
+    VALUES (?, ?, ?, ?)
+`
+
+// 유저 폴더 등록
+export const insertUserFolder = `
+    INSERT INTO user_folder
+    (user_id, folder_id)
+    VALUES (?, ?)
+    `
 // 아카이브 글 등록
 export const insertArchive = `
     INSERT INTO archive 
@@ -58,3 +72,13 @@ export const selectArchive = `
 
 export const selectFolder = `
     SELECT * FROM folder WHERE id = ?`
+
+// 유저의 폴더 정보 조회
+export const selectUserFolder = `
+    SELECT * FROM folder WHERE user_id = ?`
+
+export const selectMonthlyArchivesCount = `
+  SELECT COUNT(*) AS month_archive_count
+  FROM archive
+  WHERE user_id = ? AND YEAR(created_at) = ? AND MONTH(created_at) = ?;
+`

@@ -7,6 +7,23 @@ import {
   showArchiveDetail,
 } from '../models/archive.dao.js'
 
+import { 
+  addArchiveFolderService,
+  showArchiveUserService 
+} from '../services/archive.service.js'
+
+// 아카이브 폴더 생성
+export const addArchiveFolderController = async (req, res) => {
+  try {
+    const folderId = await addArchiveFolderService(req.body)
+    console.log('폴더 생성')
+    res.status(201).json(response(status.SUCCESS, folderId))
+  } catch (err) {
+    console.error('Error in addArchiveFolderController', err)
+    res.send(response(status.BAD_REQUEST, null))
+  }
+}
+
 // 아카이브 글 작성
 export const addArchiveController = async (req, res, next) => {
   try {
@@ -55,6 +72,19 @@ export const showArchiveDetailController = async (req, res, next) => {
     res.status(201).json(response(status.SUCCESS, result))
   } catch (error) {
     console.error('Error in showArchiveDetailController:', error)
+    res.send(response(status.BAD_REQUEST, null))
+  }
+}
+
+// 아카이브 유저정보 조회
+export const showArchiveUserController = async (req, res, next) => {
+  const archiveId = 1 // 임시
+  try {
+    const result = await showArchiveUserService(archiveId)
+    console.log('아카이브 유저정보 조회 성공')
+    res.status(200).json(response(status.SUCCESS, result))
+  } catch (error) {
+    console.error('Error in showArchiveUserController:', error)
     res.send(response(status.BAD_REQUEST, null))
   }
 }
