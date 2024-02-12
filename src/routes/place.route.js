@@ -12,9 +12,9 @@ import {
 export const placeRouter = express.Router({ mergeParams: true })
 
 placeRouter.post('/', addPlaceController)
+placeRouter.get('/search', searchPlaceController)
 placeRouter.get('/:placeId', showPlaceDetailController)
 placeRouter.post('/like', showPreferencePlacesController)
 placeRouter.delete('/like/:placeId', cancelPreferencePlaceController)
 placeRouter.post('/like/:placeId', addPreferencePlaceController)
-placeRouter.get('/search', searchPlaceController)
 placeRouter.post('/visit', toggleVisitedController)
