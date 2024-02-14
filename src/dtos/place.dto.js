@@ -38,3 +38,19 @@ export const showPlaceDetailDTO = (placeData, hashtag, image) => {
     isLike: place.isLike ? true : false,
   }
 }
+
+export const showPlaceListDTO = (placeList) => {
+  let result = []
+  placeList.forEach((place) => {
+    result.push({
+      id: place.id,
+      name: place.name,
+      address: place.address,
+      category_id: place.category_id,
+      thumbnail_url: place.thumbnail_url,
+      isLike: place.isLike ? true: false
+    })
+  })
+
+  return result
+}

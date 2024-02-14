@@ -11,6 +11,7 @@ import {
   addPlaceService,
   toggleVisitedService,
 } from '../services/place.service.js'
+import { showPlaceListDTO } from '../dtos/place.dto.js'
 
 // 장소 등록
 export const addPlaceController = async (req, res) => {
@@ -103,7 +104,7 @@ export const searchPlaceController = async (req, res) => {
     const result = {
       totalNum,
       hasNext,
-      place: currentPages,
+      place: showPlaceListDTO(currentPages)
     }
     res.status(200).json(response(status.SUCCESS, result))
   } catch (err) {
