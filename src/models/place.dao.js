@@ -135,7 +135,7 @@ export const getPreferencePlacesList = async (
   }
 
   if (sort === 2001) {
-    sortCondtion = ' ORDER BY place.created_at ASC'
+    sortCondition = ' ORDER BY place.created_at ASC'
   }
 
   queryString += visitCondition
