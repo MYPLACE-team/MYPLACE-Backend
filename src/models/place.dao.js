@@ -252,7 +252,7 @@ export const toggleVisited = async (req) => {
     const conn = await pool.getConnection()
     const [result] = await pool.query(toggleVisitedAttribute, [
       req.user_id,
-      req.place_id,
+      req.placeId,
     ])
     conn.release()
 
