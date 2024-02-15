@@ -30,8 +30,8 @@ export const showInitialInfoPlaceService = async (user_id) => {
     const result = await showInitialPlaceInfo(user_id)
 
     return {
-      "username": result.username,
-      "placeList": showPreferencePlacesDTO(result.placeList)
+      username: result.username,
+      placeList: showPreferencePlacesDTO(result.placeList),
     }
   } catch (err) {
     console.error(err)

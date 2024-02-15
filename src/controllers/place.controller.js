@@ -32,10 +32,10 @@ export const showInitialInfoPlaceController = async (req, res) => {
 
   try {
     const info = await showInitialInfoPlaceService(user_id)
-    
+
     res.send(response(status.SHOW_INITIAL_INFO_SUCCESS, info))
-  } catch (err){
-    console.error('Error in showInitialInfoPlaceController', error)
+  } catch (err) {
+    console.error('Error in showInitialInfoPlaceController', err)
     res.send(response(status.BAD_REQUEST, null))
   }
 }
@@ -119,7 +119,7 @@ export const searchPlaceController = async (req, res) => {
     const result = {
       totalNum,
       hasNext,
-      place: showPlaceListDTO(currentPages)
+      place: showPlaceListDTO(currentPages),
     }
     res.status(200).json(response(status.SUCCESS, result))
   } catch (err) {
