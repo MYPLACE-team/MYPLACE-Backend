@@ -22,6 +22,7 @@ import {
 import { showPlaceDetailDTO } from '../dtos/place.dto'
 
 import { selectUser } from './auth.sql'
+import { selectUsername } from './user.sql'
 
 export const addPlace = async (req) => {
   const {
@@ -99,6 +100,24 @@ export const addPlace = async (req) => {
       console.error('Error in rollback:', rollbackError)
     }
 
+    throw new BaseError(status.PARAMETER_IS_WRONG)
+  }
+}
+
+export const showInitialPlaceInfo = async (user_id) => {
+
+  try {
+    const conn = await pool.getConnection()
+    const [placeList] = await pool.query(selectAllPlace, user_id)
+    const [user] = await pool.query(selectUsername, user_id)
+    conn.release()
+
+    return {
+      "username": user[0].username,
+      "placeList": placeList
+    }
+  } catch (err) {
+    console.error(err)
     throw new BaseError(status.PARAMETER_IS_WRONG)
   }
 }
@@ -241,4 +260,4 @@ export const toggleVisited = async (req) => {
   } catch (err) {
     console.error(err)
   }
-}
+} 
