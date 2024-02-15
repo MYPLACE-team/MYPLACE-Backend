@@ -150,11 +150,11 @@ export const getPreferencePlacesList = async (
 
   // 정렬 조건
   if (sort === 2000) {
-    sortCondition = ' ORDER BY place.name ASC'
+    sortCondition = ' ORDER BY place.created_at ASC'
   }
 
   if (sort === 2001) {
-    sortCondition = ' ORDER BY place.created_at ASC'
+    sortCondition = ' ORDER BY place.name ASC' 
   }
 
   queryString += visitCondition
