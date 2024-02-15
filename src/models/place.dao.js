@@ -150,7 +150,7 @@ export const getPreferencePlacesList = async (
 
   // 정렬 조건
   if (sort === 2000) {
-    sortCondition = ' ORDER BY place.created_at ASC'
+    sortCondition = ' ORDER BY place.created_at DESC'
   }
 
   if (sort === 2001) {
