@@ -19,6 +19,6 @@ placeRouter.get('/search', searchPlaceController)
 placeRouter.post('/like', showPreferencePlacesController)
 placeRouter.delete('/like/:placeId', cancelPreferencePlaceController)
 placeRouter.post('/like/:placeId', addPreferencePlaceController)
-placeRouter.post('/visit', toggleVisitedController)
+placeRouter.get('/visit/:placeId', toggleVisitedController)
 
 placeRouter.get('/:placeId', showPlaceDetailController)

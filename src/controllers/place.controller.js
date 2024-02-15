@@ -148,11 +148,11 @@ export const showPlaceDetailController = async (req, res) => {
 export const toggleVisitedController = async (req, res) => {
   console.log('가본 장소/안가본 장소 변경')
   const user_id = 1 // 임시
-  const place_id = req.body.place_id
+  const { placeId } = req.params
 
   const data = {
     user_id,
-    place_id,
+    placeId,
   }
 
   const result = await toggleVisitedService(data)
