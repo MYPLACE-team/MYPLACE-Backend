@@ -46,8 +46,8 @@ export const showPlaceListDTO = (placeList) => {
       id: place.id,
       name: place.name,
       address: place.address,
-      category_id: place.category_id,
-      thumbnail_url: place.thumbnail_url,
+      categoryId: place.category_id,
+      thumbnailUrl: place.thumbnail_url,
       isLike: place.isLike ? true: false
     })
   })
