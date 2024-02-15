@@ -7,6 +7,7 @@ import {
   getPlaceDetail,
   addPlace,
   toggleVisited,
+  showInitialPlaceInfo,
 } from '../models/place.dao'
 
 export const showPreferencePlacesService = async (req) => {
@@ -19,6 +20,19 @@ export const showPreferencePlacesService = async (req) => {
     )
 
     return showPreferencePlacesDTO(placeList)
+  } catch (err) {
+    console.error(err)
+  }
+}
+
+export const showInitialInfoPlaceService = async (user_id) => {
+  try {
+    const result = await showInitialPlaceInfo(user_id)
+
+    return {
+      username: result.username,
+      placeList: showPreferencePlacesDTO(result.placeList),
+    }
   } catch (err) {
     console.error(err)
   }

@@ -10,6 +10,7 @@ import {
   showPlaceDetailService,
   addPlaceService,
   toggleVisitedService,
+  showInitialInfoPlaceService,
 } from '../services/place.service.js'
 import { showPlaceListDTO } from '../dtos/place.dto.js'
 
@@ -21,6 +22,20 @@ export const addPlaceController = async (req, res) => {
     res.status(201).json(response(status.SUCCESS, { placeId }))
   } catch (error) {
     console.error('Error in addPlaceController:', error)
+    res.send(response(status.BAD_REQUEST, null))
+  }
+}
+
+export const showInitialInfoPlaceController = async (req, res) => {
+  console.log('유저가 홈 초기 정보 조회를 요청하였습니다')
+  const user_id = 1
+
+  try {
+    const info = await showInitialInfoPlaceService(user_id)
+
+    res.send(response(status.SHOW_INITIAL_INFO_SUCCESS, info))
+  } catch (err) {
+    console.error('Error in showInitialInfoPlaceController', err)
     res.send(response(status.BAD_REQUEST, null))
   }
 }
@@ -104,7 +119,7 @@ export const searchPlaceController = async (req, res) => {
     const result = {
       totalNum,
       hasNext,
-      place: showPlaceListDTO(currentPages)
+      place: showPlaceListDTO(currentPages),
     }
     res.status(200).json(response(status.SUCCESS, result))
   } catch (err) {

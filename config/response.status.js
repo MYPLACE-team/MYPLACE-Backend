@@ -54,6 +54,12 @@ export const status = {
     code: 'PLACE2000',
     message: '관심 장소 조회가 정상적으로 수행되었습니다',
   },
+  SHOW_INITIAL_INFO_SUCCESS: {
+    status: 200,
+    isSuccess: true,
+    code: 'PLACE2001',
+    message: '초기 정보 조회가 정상적으로 수행되었습니다',
+  },
   //user
   USER_NOT_EXISTS: {
     status: 404,
