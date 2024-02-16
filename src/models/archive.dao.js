@@ -20,14 +20,20 @@ import {
   selectFolder,
   selectMonthlyArchivesCount,
   selectUserArchiveCount,
-  selectIser,
   selectUserFolder,
   deleteArchiveFolderByFolderId,
   deleteUserFolderByFolderId,
   deleteFolder,
+  selectAllArchiveList,
+  selectHashtagIdByHashtagName,
+  selectArchiveListWithHashtag
 } from './archive.sql'
 import { selectUser } from './user.sql'
-import { showArchiveDetailDTO, showArchiveUserDTO } from '../dtos/archive.dto'
+import { 
+  showArchiveDetailDTO, 
+  showArchiveUserDTO,
+  showArchiveListDTO
+} from '../dtos/archive.dto'
 
 export const addArchiveFolder = async (req) => {
   const conn = await pool.getConnection()
@@ -302,6 +308,60 @@ export const removeFolder = async(folderId) => {
     return result 
   } catch (err){
     console.log(err)
+    throw new BaseError(status.PARAMETER_IS_WRONG)
+  }
+}
+
+export const showArchiveList = async(userId, hashtags, page) => {
+  const conn = await pool.getConnection()
+
+  // 추후 페이지네이션 적용
+  /*
+  const p = (page - 1) * 10
+  */
+  const tags = hashtags === undefined ? '' : hashtags.split(',')
+  //console.log("tags : ",tags)
+  const firstTag = tags[0] === undefined ? '' : tags[0]
+  const secondTag = tags[1] === undefined ? '' : tags[1]
+
+  try{
+    let archiveList
+
+    if (tags === ''){
+      archiveList = await conn.query(selectAllArchiveList, userId)
+    }
+
+    else{
+      let searchData = '%'
+      let firstTagId, secondTagId
+      let id1, id2
+      [[firstTagId]] = await pool.query(selectHashtagIdByHashtagName, firstTag)
+
+      if (secondTag !== ''){
+      [[secondTagId]] = await pool.query(selectHashtagIdByHashtagName, secondTag)
+      
+      id1 = Math.min(firstTagId.id, secondTagId.id)
+      id2 = Math.max(firstTagId.id, secondTagId.id)
+
+      searchData += id1
+      searchData += '%'
+      searchData += id2
+      searchData += '%'
+      }
+
+      else{
+        searchData += firstTagId.id
+        searchData += '%'
+      }
+      
+      console.log(searchData)
+      archiveList = await conn.query(selectArchiveListWithHashtag, [userId, searchData])
+    }
+
+    //console.log(archiveList)
+    return showArchiveListDTO(archiveList[0])
+  } catch (err){
+    console.error(err)
     throw new BaseError(status.PARAMETER_IS_WRONG)
   }
 }
