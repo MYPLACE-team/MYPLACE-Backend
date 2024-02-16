@@ -35,7 +35,7 @@ export const getUserInfo = async (userId) => {
       avgRate += archive.score
     })
     avgRate /= archiveCount
-
+    avgRate = Math.round(avgRate)
     const result = { user, archiveCount, avgRate, placeCount, provider }
     conn.release()
     return result
@@ -83,6 +83,7 @@ export const editUserProfile = async (req) => {
       avgRate += archive.score
     })
     avgRate /= archiveCount
+    avgRate = Math.round(avgRate)
     const [user] = await conn.query(getUserById, userId)
     const result = { user, archiveCount, avgRate, placeCount, provider }
     conn.commit()
