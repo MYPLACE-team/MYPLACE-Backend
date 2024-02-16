@@ -29,11 +29,12 @@ export const showArchiveDetailDTO = (archive, place, hashtags) => {
       menu: archive.menu,
       score: archive.score,
       comment: archive.comment,
-      images: archive.images.split(','),
+      images: archive.images !== null ? archive.images.split(',') : [],
       hashtag: hashtags,
       visitedDate: archive.visite,
       isPublic: archive.isPublic,
-      folder: archive.folder,
+      folderId: archive.folder.id,
+      folderName: archive.folder.name
     },
   }
 }
