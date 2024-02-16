@@ -14,5 +14,6 @@ export const userResponseDTO = (result) => {
     placeCount: result.placeCount,
     archiveCount: result.archiveCount,
     avgRate: result.avgRate,
+    provider: result.provider,
   }
 }
