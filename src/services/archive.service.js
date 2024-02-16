@@ -6,6 +6,7 @@ import {
   removeArchive,
   showArchiveUser,
   removeFolder,
+  showArchiveList
 } from '../models/archive.dao'
 
 export const addArchiveFolderService = async (req) => {
@@ -52,6 +53,16 @@ export const removeFolderService = async (req) => {
     const result = await removeFolder(req)
     return result
   } catch (err){
+    throw new BaseError(status.PARAMETER_IS_WRONG)
+  }
+}
+
+export const showArchiveListService = async (userId, tag, page) => {
+  try{
+    const result = await showArchiveList(userId, tag, page)
+    return result
+  } catch (err){
+    console.error(err)
     throw new BaseError(status.PARAMETER_IS_WRONG)
   }
 }

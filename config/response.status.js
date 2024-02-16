@@ -61,6 +61,12 @@ export const status = {
     message: '초기 정보 조회가 정상적으로 수행되었습니다',
   },
   //archive
+  SHOW_ARCHIVE_LIST_SUCCESS: {
+    status: 200,
+    isSuccess: true,
+    code: 'ARCHIVE2000',
+    message: '아카이브 장소 목록 조회가 정상적으로 수행되었습니다',
+  },
   REMOVE_FOLDER_SUCCESS: {
     status: 200,
     isSuccess: true,
