@@ -61,7 +61,6 @@ export const showArchiveUserDTO = (user, folder, count, archiveCount) => {
 }
 
 export const showArchiveListDTO = (archiveList) => {
-  //console.log(archiveList)
 
   return archiveList.map((archive) => ({
     id: archive.id,
@@ -73,8 +72,4 @@ export const showArchiveListDTO = (archiveList) => {
     thumbnailUrl: archive.thumbnail_url,
     hashtag: archive.hashtags !== null ? archive.hashtags.split(',') : []
   }))
-
-  //console.log(archiveList)
-
-  // return archiveList
 }

@@ -32,7 +32,8 @@ export const selectAllPlace = `
         place.id,
         place.category_id,
         place.lat,
-        place.lon
+        place.lon,
+        user_place.is_visited
   FROM user_place 
   JOIN place ON user_place.place_id = place.id 
   WHERE user_place.user_id = ?`
