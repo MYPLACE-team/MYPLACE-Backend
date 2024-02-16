@@ -331,7 +331,7 @@ export const showArchiveList = async (userId, hashtags, page) => {
   const p = (page - 1) * 10
   */
   const tags = hashtags === undefined ? '' : hashtags.split(',')
-  //console.log("tags : ",tags)
+  console.log("tags : ",tags)
   const firstTag = tags[0] === undefined ? '' : tags[0]
   const secondTag = tags[1] === undefined ? '' : tags[1]
 
@@ -364,7 +364,6 @@ export const showArchiveList = async (userId, hashtags, page) => {
         searchData += '%'
       }
 
-      console.log(searchData)
       archiveList = await conn.query(selectArchiveListWithHashtag, [
         userId,
         searchData,
