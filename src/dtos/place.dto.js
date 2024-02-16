@@ -15,7 +15,8 @@ export const showPreferencePlacesDTO = (placeList) => {
       address: place.address,
       categoryId: place.category_id,
       lat: place.lat,
-      lon: place.lon
+      lon: place.lon,
+      isVisited: place.is_visited
     })
   })
 
