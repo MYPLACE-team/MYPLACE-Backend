@@ -222,8 +222,6 @@ export const showArchiveDetail = async (archiveId) => {
     const archiveResult = await conn.query(selectArchiveDetail, [archiveId])
     const archiveData = archiveResult[0][0]
 
-    console.log('archiveData', archiveData)
-
     if (!archiveData) {
       throw new BaseError(status.PARAMETER_IS_WRONG)
     }
