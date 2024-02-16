@@ -37,9 +37,12 @@ export const showComplain = async (req, res) => {
   const conn = await pool.getConnection()
 
   try {
-    const result = await conn.query(getComplain, [])
+    const page = req.query.page ? parseInt(req.query.page) : 1 // 페이지 번호, 기본값은 1
+    const offset = (page - 1) * 10 // 오프셋 계산
 
+    const result = await conn.query(getComplain, offset)
     conn.release()
+
     return result[0]
   } catch (error) {
     console.log(error)
