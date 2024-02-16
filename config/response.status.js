@@ -67,6 +67,12 @@ export const status = {
     code: 'USER4000',
     message: '존재하지 않는 유저입니다.',
   },
+  NAME_ALREADY_EXISTS: {
+    status: 404,
+    isSuccess: false,
+    code: 'USER4001',
+    message: '이미 존재하는 닉네임입니다.',
+  },
   PLACE_VISITED_TOGGLE_SUCCESS: {
     status: 200,
     isSuccess: true,
