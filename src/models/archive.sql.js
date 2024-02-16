@@ -82,9 +82,9 @@ export const selectUserFolder = `
     ORDER BY folder.id DESC`
 
 export const selectMonthlyArchivesCount = `
-  SELECT COUNT(*) AS month_archive_count
-  FROM archive
-  WHERE user_id = ? AND YEAR(created_at) = ? AND MONTH(created_at) = ?;
+    SELECT COUNT(*) AS month_archive_count
+    FROM archive
+    WHERE user_id = ? AND YEAR(created_at) = ? AND MONTH(created_at) = ?;
 `
 
 // 유저의 아카이브 글 조회
@@ -93,3 +93,30 @@ export const selectUserArchiveCount = `
         COUNT(*) AS archive_count
     FROM archive
     WHERE user_id = ?`
+
+// 해시태그 아이디 받아오기
+export const selectHashtagIdByHashtagName = `
+    SELECT
+        id
+    FROM hashtag
+    WHERE name = ?`
+
+// 유저의 아카이브 리스트 정보 조회
+export const selectAllArchiveList = `
+SELECT 
+        a.id, a.score, a.user_id,
+        p.name, p.address, p.category_id, p.thumbnail_url, p.id as place_id,
+        GROUP_CONCAT(h0.id ORDER BY h0.id SEPARATOR '.') AS hashtag_ids,
+        GROUP_CONCAT(h0.name) as hashtags
+    FROM archive a
+    JOIN place p ON a.place_id = p.id
+    LEFT JOIN archive_hashtag ah0 ON a.id = ah0.archive_id
+    LEFT JOIN hashtag h0 ON h0.id = ah0.hashtag_id
+    WHERE a.user_id = ?
+    GROUP BY a.id`
+
+// pagenation 시에 LIMIT 10 OFFEST ? 구문 마지막에 추가 바람
+
+export const selectArchiveListWithHashtag = `
+${selectAllArchiveList}
+HAVING hashtag_ids LIKE ?`

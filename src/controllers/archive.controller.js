@@ -9,6 +9,7 @@ import {
 
 import { 
   addArchiveFolderService,
+  showArchiveListService,
   showArchiveUserService 
 } from '../services/archive.service.js'
 
@@ -85,6 +86,24 @@ export const showArchiveUserController = async (req, res, next) => {
     res.status(200).json(response(status.SUCCESS, result))
   } catch (error) {
     console.error('Error in showArchiveUserController:', error)
+    res.send(response(status.BAD_REQUEST, null))
+  }
+}
+
+// 아카이브 리스트 조회
+export const showArchiveListController = async(req, res) => {
+  const userId = 1
+  //console.log(req.query)
+  const { tag } = req.query
+  const { page } = req.query
+  //console.log(tag, page)
+
+  try{
+    console.log('아카이브 글 목록 조회')
+    const result = await showArchiveListService(userId, tag, page)
+    res.send(response(status.SHOW_ARCHIVE_LIST_SUCCESS, result))
+  } catch (err){
+    console.error('Error in showArchiveListController', err)
     res.send(response(status.BAD_REQUEST, null))
   }
 }
