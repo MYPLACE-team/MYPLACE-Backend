@@ -55,3 +55,18 @@ export const showArchiveUserDTO = (user, folder, count, archiveCount) => {
     }),
   }
 }
+
+export const showArchiveListDTO = (archiveList) => {
+  archiveList.map((archive) => ({
+    id: archive.id,
+    score: archive.score,
+    userId: archive.user_id,
+    name: archive.name,
+    address: archive.address,
+    categoryId: archive.category_id,
+    thumbnailUrl: archive.thumbnail_url,
+    hashtag: archive.hashtags !== null ? archive.hashtags.split(',') : []
+  }))
+
+  return archiveList
+}
