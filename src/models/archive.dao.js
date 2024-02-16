@@ -21,30 +21,32 @@ import {
   selectMonthlyArchivesCount,
   selectUserArchiveCount,
   selectUserFolder,
+  selectArchiveHashtags,
   deleteArchiveFolderByFolderId,
   deleteUserFolderByFolderId,
   deleteFolder,
+  selectArchiveFolder,
   selectAllArchiveList,
   selectHashtagIdByHashtagName,
-  selectArchiveListWithHashtag
+  selectArchiveListWithHashtag,
 } from './archive.sql'
 import { selectUser } from './user.sql'
-import { 
-  showArchiveDetailDTO, 
+import {
+  showArchiveDetailDTO,
   showArchiveUserDTO,
-  showArchiveListDTO
+  showArchiveListDTO,
 } from '../dtos/archive.dto'
 
 export const addArchiveFolder = async (req) => {
   const conn = await pool.getConnection()
   const userId = 1 // 임시
 
-  try{
+  try {
     const [insertFolderResult] = await conn.query(insertFolder, [
       req.name,
       req.thumbnailImage,
       req.start,
-      req.end
+      req.end,
     ])
 
     console.log(insertFolderResult)
@@ -53,13 +55,13 @@ export const addArchiveFolder = async (req) => {
 
     const userFolderResult = await conn.query(insertUserFolder, [
       userId,
-      folderId
+      folderId,
     ])
 
     console.log(userFolderResult)
 
     return folderId
-  } catch (err){
+  } catch (err) {
     console.log(err)
     throw new BaseError(status.PARAMETER_IS_WRONG)
   }
@@ -236,6 +238,9 @@ export const showArchiveDetail = async (archiveId) => {
     ])
     const placeData = placeResult[0][0]
 
+    const folderResult = await conn.query(selectArchiveFolder, archiveId)
+    const folder = folderResult[0][0]
+
     const archive = {
       id: archiveData.id,
       title: archiveData.title,
@@ -246,6 +251,9 @@ export const showArchiveDetail = async (archiveId) => {
       comment: archiveData.comment,
       images: archiveData.image_urls,
       count: archiveData.author_archive_count,
+      visite: archiveData.visited_date,
+      isPublic: archiveData.is_public ? true : false,
+      folder: folder,
     }
 
     const place = {
@@ -257,7 +265,10 @@ export const showArchiveDetail = async (archiveId) => {
       thumbnail: placeData.thumbnail_url,
     }
 
-    const responseDTO = showArchiveDetailDTO(archive, place)
+    const hashtagsResult = await conn.query(selectArchiveHashtags, archiveId)
+    const hashtags = hashtagsResult[0].map((tag) => tag.name)
+
+    const responseDTO = showArchiveDetailDTO(archive, place, hashtags)
 
     conn.release()
     return responseDTO
@@ -297,22 +308,22 @@ export const showArchiveUser = async (userId) => {
   }
 }
 
-export const removeFolder = async(folderId) => {
+export const removeFolder = async (folderId) => {
   const conn = await pool.getConnection()
 
-  try{
+  try {
     await conn.query(deleteArchiveFolderByFolderId, folderId)
     await conn.query(deleteUserFolderByFolderId, folderId)
     const result = await conn.query(deleteFolder, folderId)
 
-    return result 
-  } catch (err){
+    return result
+  } catch (err) {
     console.log(err)
     throw new BaseError(status.PARAMETER_IS_WRONG)
   }
 }
 
-export const showArchiveList = async(userId, hashtags, page) => {
+export const showArchiveList = async (userId, hashtags, page) => {
   const conn = await pool.getConnection()
 
   // 추후 페이지네이션 적용
@@ -324,43 +335,45 @@ export const showArchiveList = async(userId, hashtags, page) => {
   const firstTag = tags[0] === undefined ? '' : tags[0]
   const secondTag = tags[1] === undefined ? '' : tags[1]
 
-  try{
+  try {
     let archiveList
 
-    if (tags === ''){
+    if (tags === '') {
       archiveList = await conn.query(selectAllArchiveList, userId)
-    }
-
-    else{
+    } else {
       let searchData = '%'
       let firstTagId, secondTagId
       let id1, id2
-      [[firstTagId]] = await pool.query(selectHashtagIdByHashtagName, firstTag)
+      ;[[firstTagId]] = await pool.query(selectHashtagIdByHashtagName, firstTag)
 
-      if (secondTag !== ''){
-      [[secondTagId]] = await pool.query(selectHashtagIdByHashtagName, secondTag)
-      
-      id1 = Math.min(firstTagId.id, secondTagId.id)
-      id2 = Math.max(firstTagId.id, secondTagId.id)
+      if (secondTag !== '') {
+        ;[[secondTagId]] = await pool.query(
+          selectHashtagIdByHashtagName,
+          secondTag,
+        )
 
-      searchData += id1
-      searchData += '%'
-      searchData += id2
-      searchData += '%'
-      }
+        id1 = Math.min(firstTagId.id, secondTagId.id)
+        id2 = Math.max(firstTagId.id, secondTagId.id)
 
-      else{
+        searchData += id1
+        searchData += '%'
+        searchData += id2
+        searchData += '%'
+      } else {
         searchData += firstTagId.id
         searchData += '%'
       }
-      
+
       console.log(searchData)
-      archiveList = await conn.query(selectArchiveListWithHashtag, [userId, searchData])
+      archiveList = await conn.query(selectArchiveListWithHashtag, [
+        userId,
+        searchData,
+      ])
     }
 
     //console.log(archiveList)
     return showArchiveListDTO(archiveList[0])
-  } catch (err){
+  } catch (err) {
     console.error(err)
     throw new BaseError(status.PARAMETER_IS_WRONG)
   }
