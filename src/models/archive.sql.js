@@ -49,6 +49,19 @@ export const deleteArchiveHashtag = `
 export const deleteArchiveFolder = `
     DELETE FROM archive_folder WHERE archive_id = ?`
 
+// 아카이브-폴더 삭제(폴더 기반)
+export const deleteArchiveFolderByFolderId = `
+    DELETE FROM archive_folder WHERE folder_id = ?`
+
+// 유저-폴더 삭제
+export const deleteUserFolderByFolderId = `
+    DELETE FROM user_folder WHERE folder_id = ?`
+
+// 폴더 삭제
+export const deleteFolder = `
+    DELETE FROM folder WHERE id = ?` 
+
+
 // 수정
 // 아카이브 글 수정
 export const updateArchive = `

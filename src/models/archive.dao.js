@@ -23,6 +23,9 @@ import {
   selectIser,
   selectUserFolder,
   selectArchiveHashtags,
+  deleteArchiveFolderByFolderId,
+  deleteUserFolderByFolderId,
+  deleteFolder,
 } from './archive.sql'
 import { selectUser } from './user.sql'
 import { showArchiveDetailDTO, showArchiveUserDTO } from '../dtos/archive.dto'
@@ -288,6 +291,21 @@ export const showArchiveUser = async (userId) => {
     return responseDTO
   } catch (error) {
     console.log(error)
+    throw new BaseError(status.PARAMETER_IS_WRONG)
+  }
+}
+
+export const removeFolder = async (folderId) => {
+  const conn = await pool.getConnection()
+
+  try {
+    await conn.query(deleteArchiveFolderByFolderId, folderId)
+    await conn.query(deleteUserFolderByFolderId, folderId)
+    const result = await conn.query(deleteFolder, folderId)
+
+    return result
+  } catch (err) {
+    console.log(err)
     throw new BaseError(status.PARAMETER_IS_WRONG)
   }
 }
