@@ -29,7 +29,7 @@ export const showArchiveDetailDTO = (archive, place, hashtags) => {
       menu: archive.menu,
       score: archive.score,
       comment: archive.comment,
-      images: archive.images,
+      images: archive.images.split(','),
       hashtags: hashtags,
     },
   }
