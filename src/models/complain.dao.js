@@ -2,7 +2,7 @@ import { pool } from '../../config/db.config'
 import { BaseError } from '../../config/error'
 import { status } from '../../config/response.status'
 
-import { insertPlaceComplain } from './complain.sql'
+import { insertPlaceComplain, getComplain } from './complain.sql'
 import { selectPlace } from './place.sql'
 
 export const postComplainPlace = async (req, res) => {
@@ -27,6 +27,20 @@ export const postComplainPlace = async (req, res) => {
     ])
     conn.release()
     return { placeId: parseInt(placeId) }
+  } catch (error) {
+    console.log(error)
+    throw new BaseError(status.PARAMETER_IS_WRONG)
+  }
+}
+
+export const showComplain = async (req, res) => {
+  const conn = await pool.getConnection()
+
+  try {
+    const result = await conn.query(getComplain, [])
+
+    conn.release()
+    return result[0]
   } catch (error) {
     console.log(error)
     throw new BaseError(status.PARAMETER_IS_WRONG)
