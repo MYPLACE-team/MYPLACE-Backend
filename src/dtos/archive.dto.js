@@ -10,13 +10,13 @@ export const loginResponseDTO = (user, access_token) => {
   }
 }
 
-export const showArchiveDetailDTO = (archive, place) => {
+export const showArchiveDetailDTO = (archive, place, hashtags) => {
   return {
     place: {
       placeId: place.id,
       name: place.name,
       address: place.address,
-      category: place.category,
+      categoryId: place.category,
       isLike: place.isLike,
       thumbnail: place.thumbnail,
     },
@@ -30,6 +30,7 @@ export const showArchiveDetailDTO = (archive, place) => {
       score: archive.score,
       comment: archive.comment,
       images: archive.images,
+      hashtags: hashtags,
     },
   }
 }

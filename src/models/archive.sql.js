@@ -67,6 +67,14 @@ export const selectArchiveDetail = `
     LEFT JOIN archive_img ON archive.id = archive_img.archive_id
     WHERE archive.id = ?
     GROUP BY archive.id`
+
+// 아카이브 해시태그 조회
+export const selectArchiveHashtags = `
+    SELECT hashtag.id, hashtag.name
+    FROM archive_hashtag
+    JOIN hashtag ON archive_hashtag.hashtag_id = hashtag.id
+    WHERE archive_hashtag.archive_id = ?`
+
 export const selectArchive = `
     SELECT * FROM archive WHERE id = ?`
 

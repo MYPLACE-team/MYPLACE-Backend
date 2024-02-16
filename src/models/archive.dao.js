@@ -22,6 +22,7 @@ import {
   selectUserArchiveCount,
   selectIser,
   selectUserFolder,
+  selectArchiveHashtags,
 } from './archive.sql'
 import { selectUser } from './user.sql'
 import { showArchiveDetailDTO, showArchiveUserDTO } from '../dtos/archive.dto'
@@ -30,12 +31,12 @@ export const addArchiveFolder = async (req) => {
   const conn = await pool.getConnection()
   const userId = 1 // 임시
 
-  try{
+  try {
     const [insertFolderResult] = await conn.query(insertFolder, [
       req.name,
       req.thumbnailImage,
       req.start,
-      req.end
+      req.end,
     ])
 
     console.log(insertFolderResult)
@@ -44,13 +45,13 @@ export const addArchiveFolder = async (req) => {
 
     const userFolderResult = await conn.query(insertUserFolder, [
       userId,
-      folderId
+      folderId,
     ])
 
     console.log(userFolderResult)
 
     return folderId
-  } catch (err){
+  } catch (err) {
     console.log(err)
     throw new BaseError(status.PARAMETER_IS_WRONG)
   }
@@ -248,7 +249,10 @@ export const showArchiveDetail = async (archiveId) => {
       thumbnail: placeData.thumbnail_url,
     }
 
-    const responseDTO = showArchiveDetailDTO(archive, place)
+    const hashtagsResult = await conn.query(selectArchiveHashtags, archiveId)
+    const hashtags = hashtagsResult[0].map((tag) => tag.name)
+
+    const responseDTO = showArchiveDetailDTO(archive, place, hashtags)
 
     conn.release()
     return responseDTO
