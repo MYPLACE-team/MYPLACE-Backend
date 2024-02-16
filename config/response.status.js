@@ -60,6 +60,13 @@ export const status = {
     code: 'PLACE2001',
     message: '초기 정보 조회가 정상적으로 수행되었습니다',
   },
+  //archive
+  REMOVE_FOLDER_SUCCESS: {
+    status: 200,
+    isSuccess: true,
+    code: 'ARCHIVE2000',
+    message: '폴더가 성공적으로 삭제되었습니다'
+  },
   //user
   USER_NOT_EXISTS: {
     status: 404,
