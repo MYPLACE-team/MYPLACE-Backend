@@ -22,6 +22,7 @@ import {
 import { showPlaceDetailDTO } from '../dtos/place.dto'
 
 import { selectUser } from './auth.sql'
+import { selectUsername } from './user.sql'
 
 export const addPlace = async (req) => {
   const {
@@ -44,8 +45,10 @@ export const addPlace = async (req) => {
     conn = await pool.getConnection()
     await conn.beginTransaction()
 
+    const validHashtags = hashtag.filter((tag) => tag.trim() !== '')
+
     const hashtagIds = []
-    for (const tag of hashtag) {
+    for (const tag of validHashtags) {
       const [rows] = await conn.query(selectHashtag, [tag])
       if (rows.length > 0) {
         hashtagIds.push(rows[0].id)
@@ -62,8 +65,8 @@ export const addPlace = async (req) => {
       address,
       categoryId,
       recDish,
-      closedDay,
-      service,
+      closedDay.join(','),
+      service.join(','),
       link,
       userId,
     ])
@@ -101,6 +104,24 @@ export const addPlace = async (req) => {
   }
 }
 
+export const showInitialPlaceInfo = async (user_id) => {
+
+  try {
+    const conn = await pool.getConnection()
+    const [placeList] = await pool.query(selectAllPlace, user_id)
+    const [user] = await pool.query(selectUsername, user_id)
+    conn.release()
+
+    return {
+      "username": user[0].username,
+      "placeList": placeList
+    }
+  } catch (err) {
+    console.error(err)
+    throw new BaseError(status.PARAMETER_IS_WRONG)
+  }
+}
+
 export const getPreferencePlacesList = async (
   user_id,
   category,
@@ -129,11 +150,11 @@ export const getPreferencePlacesList = async (
 
   // 정렬 조건
   if (sort === 2000) {
-    sortCondition = ' ORDER BY place.name ASC'
+    sortCondition = ' ORDER BY place.created_at DESC'
   }
 
   if (sort === 2001) {
-    sortCondtion = ' ORDER BY place.created_at ASC'
+    sortCondition = ' ORDER BY place.name ASC' 
   }
 
   queryString += visitCondition
@@ -231,7 +252,7 @@ export const toggleVisited = async (req) => {
     const conn = await pool.getConnection()
     const [result] = await pool.query(toggleVisitedAttribute, [
       req.user_id,
-      req.place_id,
+      req.placeId,
     ])
     conn.release()
 
@@ -239,4 +260,4 @@ export const toggleVisited = async (req) => {
   } catch (err) {
     console.error(err)
   }
-}
+} 

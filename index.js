@@ -16,6 +16,12 @@ app.use('/auth', authRouter)
 app.use('/place', placeRouter)
 app.use('/archive', archiveRouter)
 app.use('/user', userRouter)
+app.use('/output', (req, res) => {
+  res.sendFile(__dirname + '/logs/pm2/myplace.ouput-0.log')
+})
+app.use('/err', (req, res) => {
+  res.sendFile(__dirname + '/logs/pm2/myplace.error-0.log')
+})
 
 app.get('/', function (req, res) {
   res.send('Hello World')

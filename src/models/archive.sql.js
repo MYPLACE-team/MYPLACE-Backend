@@ -49,6 +49,19 @@ export const deleteArchiveHashtag = `
 export const deleteArchiveFolder = `
     DELETE FROM archive_folder WHERE archive_id = ?`
 
+// 아카이브-폴더 삭제(폴더 기반)
+export const deleteArchiveFolderByFolderId = `
+    DELETE FROM archive_folder WHERE folder_id = ?`
+
+// 유저-폴더 삭제
+export const deleteUserFolderByFolderId = `
+    DELETE FROM user_folder WHERE folder_id = ?`
+
+// 폴더 삭제
+export const deleteFolder = `
+    DELETE FROM folder WHERE id = ?` 
+
+
 // 수정
 // 아카이브 글 수정
 export const updateArchive = `
@@ -75,10 +88,21 @@ export const selectFolder = `
 
 // 유저의 폴더 정보 조회
 export const selectUserFolder = `
-    SELECT * FROM folder WHERE user_id = ?`
+    SELECT folder_id, name, thumbnail_img, date_start, date_end, user_id
+    FROM folder
+    JOIN user_folder ON user_folder.folder_id = folder.id
+    WHERE user_folder.user_id = ?
+    ORDER BY folder.id DESC`
 
 export const selectMonthlyArchivesCount = `
   SELECT COUNT(*) AS month_archive_count
   FROM archive
   WHERE user_id = ? AND YEAR(created_at) = ? AND MONTH(created_at) = ?;
 `
+
+// 유저의 아카이브 글 조회
+export const selectUserArchiveCount = `
+    SELECT
+        COUNT(*) AS archive_count
+    FROM archive
+    WHERE user_id = ?`

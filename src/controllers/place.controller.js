@@ -10,7 +10,9 @@ import {
   showPlaceDetailService,
   addPlaceService,
   toggleVisitedService,
+  showInitialInfoPlaceService,
 } from '../services/place.service.js'
+import { showPlaceListDTO } from '../dtos/place.dto.js'
 
 // 장소 등록
 export const addPlaceController = async (req, res) => {
@@ -20,6 +22,20 @@ export const addPlaceController = async (req, res) => {
     res.status(201).json(response(status.SUCCESS, { placeId }))
   } catch (error) {
     console.error('Error in addPlaceController:', error)
+    res.send(response(status.BAD_REQUEST, null))
+  }
+}
+
+export const showInitialInfoPlaceController = async (req, res) => {
+  console.log('유저가 홈 초기 정보 조회를 요청하였습니다')
+  const user_id = 1
+
+  try {
+    const info = await showInitialInfoPlaceService(user_id)
+
+    res.send(response(status.SHOW_INITIAL_INFO_SUCCESS, info))
+  } catch (err) {
+    console.error('Error in showInitialInfoPlaceController', err)
     res.send(response(status.BAD_REQUEST, null))
   }
 }
@@ -103,7 +119,7 @@ export const searchPlaceController = async (req, res) => {
     const result = {
       totalNum,
       hasNext,
-      place: currentPages,
+      place: showPlaceListDTO(currentPages),
     }
     res.status(200).json(response(status.SUCCESS, result))
   } catch (err) {
@@ -132,11 +148,10 @@ export const showPlaceDetailController = async (req, res) => {
 export const toggleVisitedController = async (req, res) => {
   console.log('가본 장소/안가본 장소 변경')
   const user_id = 1 // 임시
-  const place_id = req.body.place_id
-
+  const {placeId}  = req.params
   const data = {
     user_id,
-    place_id,
+    placeId,
   }
 
   const result = await toggleVisitedService(data)

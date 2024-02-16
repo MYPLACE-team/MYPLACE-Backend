@@ -9,6 +9,7 @@ import {
 
 import { 
   addArchiveFolderService,
+  removeFolderService,
   showArchiveUserService 
 } from '../services/archive.service.js'
 
@@ -78,13 +79,25 @@ export const showArchiveDetailController = async (req, res, next) => {
 
 // 아카이브 유저정보 조회
 export const showArchiveUserController = async (req, res, next) => {
-  const archiveId = 1 // 임시
+  const userId = 1 // 임시
   try {
-    const result = await showArchiveUserService(archiveId)
+    const result = await showArchiveUserService(userId)
     console.log('아카이브 유저정보 조회 성공')
     res.status(200).json(response(status.SUCCESS, result))
   } catch (error) {
     console.error('Error in showArchiveUserController:', error)
+    res.send(response(status.BAD_REQUEST, null))
+  }
+}
+
+export const removeFolderController = async (req, res, next) => {
+  const { folderId } = req.params
+  try{
+    const result = await removeFolderService(folderId)
+    console.log('폴더 삭제 성공')
+    res.send(response(status.REMOVE_FOLDER_SUCCESS, null))
+  } catch (err){
+    console.log('Error in removeFolderController', err)
     res.send(response(status.BAD_REQUEST, null))
   }
 }

@@ -13,6 +13,9 @@ export const showPreferencePlacesDTO = (placeList) => {
       id: place.id,
       name: place.name,
       address: place.address,
+      categoryId: place.category_id,
+      lat: place.lat,
+      lon: place.lon
     })
   })
 
@@ -28,8 +31,8 @@ export const showPlaceDetailDTO = (placeData, hashtag, image) => {
     address: place.address,
     categoryId: place.category_id,
     recDish: place.rec_dish,
-    closedDay: place.closed_day,
-    service: place.service,
+    closedDay: place.closed_day.split(','),
+    service: place.service.split(','),
     insta: place.link,
     hashtag: hashtag,
     images: image,
@@ -37,4 +40,20 @@ export const showPlaceDetailDTO = (placeData, hashtag, image) => {
     updatedAt: place.updated_at ? place.updated_at : place.created_at,
     isLike: place.isLike ? true : false,
   }
+}
+
+export const showPlaceListDTO = (placeList) => {
+  let result = []
+  placeList.forEach((place) => {
+    result.push({
+      id: place.id,
+      name: place.name,
+      address: place.address,
+      categoryId: place.category_id,
+      thumbnailUrl: place.thumbnail_url,
+      isLike: place.isLike ? true: false
+    })
+  })
+
+  return result
 }

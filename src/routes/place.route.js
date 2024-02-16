@@ -7,14 +7,18 @@ import {
   addPreferencePlaceController,
   searchPlaceController,
   showPlaceDetailController,
+  showInitialInfoPlaceController,
+
 } from '../controllers/place.controller'
 
 export const placeRouter = express.Router({ mergeParams: true })
 
 placeRouter.post('/', addPlaceController)
-placeRouter.get('/:placeId', showPlaceDetailController)
+placeRouter.get('/', showInitialInfoPlaceController)
+placeRouter.get('/search', searchPlaceController)
 placeRouter.post('/like', showPreferencePlacesController)
 placeRouter.delete('/like/:placeId', cancelPreferencePlaceController)
 placeRouter.post('/like/:placeId', addPreferencePlaceController)
-placeRouter.get('/search', searchPlaceController)
-placeRouter.post('/visit', toggleVisitedController)
+placeRouter.patch('/visit/:placeId', toggleVisitedController)
+
+placeRouter.get('/:placeId', showPlaceDetailController)

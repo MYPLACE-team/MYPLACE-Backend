@@ -19,6 +19,12 @@ import {
   selectArchive,
   selectFolder,
   selectMonthlyArchivesCount,
+  selectUserArchiveCount,
+  selectIser,
+  selectUserFolder,
+  deleteArchiveFolderByFolderId,
+  deleteUserFolderByFolderId,
+  deleteFolder,
 } from './archive.sql'
 import { selectUser } from './user.sql'
 import { showArchiveDetailDTO, showArchiveUserDTO } from '../dtos/archive.dto'
@@ -264,21 +270,38 @@ export const showArchiveUser = async (userId) => {
 
   try {
     const user = await conn.query(selectUser, userId)
-    const folder = await conn.query(selectFolder, userId)
+    const folder = await conn.query(selectUserFolder, userId)
     const count = await conn.query(selectMonthlyArchivesCount, [
       userId,
       year,
       month,
     ])
+    const archiveCount = await conn.query(selectUserArchiveCount, userId)
     const responseDTO = showArchiveUserDTO(
       user[0][0],
-      folder[0][0],
+      folder[0],
       count[0][0].month_archive_count,
+      archiveCount[0][0].archive_count,
     )
 
     return responseDTO
   } catch (error) {
     console.log(error)
+    throw new BaseError(status.PARAMETER_IS_WRONG)
+  }
+}
+
+export const removeFolder = async(folderId) => {
+  const conn = await pool.getConnection()
+
+  try{
+    await conn.query(deleteArchiveFolderByFolderId, folderId)
+    await conn.query(deleteUserFolderByFolderId, folderId)
+    const result = await conn.query(deleteFolder, folderId)
+
+    return result 
+  } catch (err){
+    console.log(err)
     throw new BaseError(status.PARAMETER_IS_WRONG)
   }
 }

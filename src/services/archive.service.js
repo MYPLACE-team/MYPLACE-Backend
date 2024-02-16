@@ -1,16 +1,17 @@
-import { BaseError } from '../../config/error';
+import { BaseError } from '../../config/error'
 import { status } from '../../config/response.status'
 import {
   addArchiveFolder,
   addArchive,
   removeArchive,
   showArchiveUser,
+  removeFolder,
 } from '../models/archive.dao'
 
 export const addArchiveFolderService = async (req) => {
-  try{
-    const result = await addArchiveFolder(req);
-    return result 
+  try {
+    const result = await addArchiveFolder(req)
+    return result
   } catch (err) {
     console.error(err)
   }
@@ -42,6 +43,15 @@ export const showArchiveUserService = async (req) => {
     return result
   } catch (err) {
     console.error(err)
+    throw new BaseError(status.PARAMETER_IS_WRONG)
+  }
+}
+
+export const removeFolderService = async (req) => {
+  try{
+    const result = await removeFolder(req)
+    return result
+  } catch (err){
     throw new BaseError(status.PARAMETER_IS_WRONG)
   }
 }

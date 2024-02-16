@@ -29,7 +29,10 @@ export const selectAllPlace = `
     SELECT 
         place.name, 
         place.address, 
-        place.id 
+        place.id,
+        place.category_id,
+        place.lat,
+        place.lon
   FROM user_place 
   JOIN place ON user_place.place_id = place.id 
   WHERE user_place.user_id = ?`
