@@ -31,6 +31,9 @@ export const showArchiveDetailDTO = (archive, place, hashtags) => {
       comment: archive.comment,
       images: archive.images.split(','),
       hashtags: hashtags,
+      visite: archive.visite,
+      isPublic: archive.isPublic,
+      folder: archive.folder,
     },
   }
 }

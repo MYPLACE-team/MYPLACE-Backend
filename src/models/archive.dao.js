@@ -26,6 +26,7 @@ import {
   deleteArchiveFolderByFolderId,
   deleteUserFolderByFolderId,
   deleteFolder,
+  selectArchiveFolder,
 } from './archive.sql'
 import { selectUser } from './user.sql'
 import { showArchiveDetailDTO, showArchiveUserDTO } from '../dtos/archive.dto'
@@ -221,6 +222,8 @@ export const showArchiveDetail = async (archiveId) => {
     const archiveResult = await conn.query(selectArchiveDetail, [archiveId])
     const archiveData = archiveResult[0][0]
 
+    console.log('archiveData', archiveData)
+
     if (!archiveData) {
       throw new BaseError(status.PARAMETER_IS_WRONG)
     }
@@ -230,6 +233,9 @@ export const showArchiveDetail = async (archiveId) => {
       archiveData.place_id,
     ])
     const placeData = placeResult[0][0]
+
+    const folderResult = await conn.query(selectArchiveFolder, archiveId)
+    const folder = folderResult[0][0]
 
     const archive = {
       id: archiveData.id,
@@ -241,6 +247,9 @@ export const showArchiveDetail = async (archiveId) => {
       comment: archiveData.comment,
       images: archiveData.image_urls,
       count: archiveData.author_archive_count,
+      visite: archiveData.visited_date,
+      isPublic: archiveData.is_public ? true : false,
+      folder: folder,
     }
 
     const place = {

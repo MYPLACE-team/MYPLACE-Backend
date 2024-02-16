@@ -59,8 +59,7 @@ export const deleteUserFolderByFolderId = `
 
 // 폴더 삭제
 export const deleteFolder = `
-    DELETE FROM folder WHERE id = ?` 
-
+    DELETE FROM folder WHERE id = ?`
 
 // 수정
 // 아카이브 글 수정
@@ -87,6 +86,13 @@ export const selectArchiveHashtags = `
     FROM archive_hashtag
     JOIN hashtag ON archive_hashtag.hashtag_id = hashtag.id
     WHERE archive_hashtag.archive_id = ?`
+
+// 아카이브 폴더 조회
+export const selectArchiveFolder = `
+    SELECT folder.id, folder.name
+    FROM archive_folder
+    JOIN folder ON archive_folder.folder_id = folder.id
+    WHERE archive_folder.archive_id = ?`
 
 export const selectArchive = `
     SELECT * FROM archive WHERE id = ?`
