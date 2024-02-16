@@ -57,7 +57,9 @@ export const showArchiveUserDTO = (user, folder, count, archiveCount) => {
 }
 
 export const showArchiveListDTO = (archiveList) => {
-  archiveList.map((archive) => ({
+  //console.log(archiveList)
+
+  return archiveList.map((archive) => ({
     id: archive.id,
     score: archive.score,
     userId: archive.user_id,
@@ -68,5 +70,7 @@ export const showArchiveListDTO = (archiveList) => {
     hashtag: archive.hashtags !== null ? archive.hashtags.split(',') : []
   }))
 
-  return archiveList
+  //console.log(archiveList)
+
+  // return archiveList
 }
