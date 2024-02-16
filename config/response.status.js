@@ -73,6 +73,13 @@ export const status = {
     code: 'PLACE2001',
     message: '방문 여부 정보 변경이 정상적으로 수행되었습니다',
   },
+  //archive
+  SHOW_ARCHIVE_LIST_SUCCESS: {
+    status: 200,
+    isSuccess: true,
+    code: 'ARCHIVE2000',
+    message: '아카이브 장소 목록 조회가 정상적으로 수행되었습니다',
+  },
   //TOKEN
   TOKEN_ERROR: {
     status: 400,
