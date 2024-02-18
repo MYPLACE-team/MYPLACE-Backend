@@ -90,7 +90,7 @@ export const addArchive = async (req) => {
       req.comment,
       req.score,
       req.menu,
-      req.cost,
+      req.price,
       req.visitedDate,
       req.isPublic,
       userId,
@@ -177,7 +177,7 @@ export const editArchive = async (archiveId, req) => {
       req.comment,
       req.score,
       req.menu,
-      req.cost,
+      req.price,
       req.visitedDate,
       req.isPublic,
       archiveId,
@@ -331,10 +331,10 @@ export const showArchiveList = async (userId, hashtags, page) => {
   const p = (page - 1) * 10
   */
   const tags = hashtags === undefined ? '' : hashtags.split(',')
-  console.log("tags : ",tags)
+  console.log('tags : ', tags)
   const firstTag = tags[0] === undefined ? '' : tags[0].replace(/\"/gi, '')
   const secondTag = tags[1] === undefined ? '' : tags[1].replace(/\"/gi, '')
-  
+
   console.log(firstTag, secondTag)
   try {
     let archiveList
