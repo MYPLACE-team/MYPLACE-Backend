@@ -16,7 +16,7 @@ export const insertUserFolder = `
 // 아카이브 글 등록
 export const insertArchive = `
     INSERT INTO archive 
-    (user_name, place_id, title, comment, score, menu, cost, visited_date, is_public, user_id, thumbnail)
+    (user_name, place_id, title, comment, score, menu, cost, visited_date, is_public, user_id)
     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 `
 
