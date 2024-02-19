@@ -66,6 +66,9 @@ export const deleteFolder = `
 export const updateArchive = `
     UPDATE archive SET title = ?, comment = ?, score = ?, menu = ?, cost = ?, visited_date = ?, is_public = ? WHERE id = ?`
 
+export const updateFolder = `
+    UPDATE folder SET name = ?, date_start = ?, date_end = ?, thumbnail_img = ? WHERE id = ?`
+
 // 조회
 // 아카이브 글 상세 조회
 export const selectArchiveDetail = `

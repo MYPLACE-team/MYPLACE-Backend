@@ -7,7 +7,8 @@ import {
   showArchiveDetailController,
   showArchiveUserController,
   removeFolderController,
-  showArchiveListController
+  showArchiveListController,
+  editFolderController
 } from '../controllers/archive.controller'
 export const archiveRouter = express.Router({ mergeParams: true })
 
@@ -19,3 +20,4 @@ archiveRouter.put('/:archiveId', editArchiveController)
 archiveRouter.get('/:archiveId', showArchiveDetailController)
 archiveRouter.post('/folder', addArchiveFolderController)
 archiveRouter.delete('/folder/:folderId', removeFolderController)
+archiveRouter.put('/folder/:folderId', editFolderController)

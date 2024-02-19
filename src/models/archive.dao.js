@@ -29,6 +29,7 @@ import {
   selectAllArchiveList,
   selectHashtagIdByHashtagName,
   selectArchiveListWithHashtag,
+  updateFolder,
 } from './archive.sql'
 import { selectUser } from './user.sql'
 import {
@@ -374,6 +375,19 @@ export const showArchiveList = async (userId, hashtags, page) => {
     //console.log(archiveList)
     return showArchiveListDTO(archiveList[0])
   } catch (err) {
+    console.error(err)
+    throw new BaseError(status.PARAMETER_IS_WRONG)
+  }
+}
+
+// 폴더 정보 변경
+export const editFolder = async (folderId, req) => {
+  const conn = await pool.getConnection()
+  try{
+    const [result] = await conn.query(updateFolder, [req.name, req.start, req.end, req.thumbnail, folderId])
+
+    return result.affectedRows
+  } catch (err){
     console.error(err)
     throw new BaseError(status.PARAMETER_IS_WRONG)
   }

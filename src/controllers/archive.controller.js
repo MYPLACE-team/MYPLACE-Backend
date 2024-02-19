@@ -11,8 +11,10 @@ import {
   addArchiveFolderService,
   removeFolderService,
   showArchiveUserService,
-  showArchiveListService
+  showArchiveListService,
+  editFolderService
 } from '../services/archive.service.js'
+import { BaseError } from '../../config/error.js'
 
 // 아카이브 폴더 생성
 export const addArchiveFolderController = async (req, res) => {
@@ -119,5 +121,26 @@ export const showArchiveListController = async(req, res) => {
   } catch (err){
     console.error('Error in showArchiveListController', err)
     res.send(response(status.ARCHIVE_LIST_DOESNT_EXIST, []))
+  }
+}
+
+// 폴더 정보 수정
+export const editFolderController = async (req, res) => {
+  const { folderId } = req.params
+
+  try{
+    console.log('폴더 정보 수정')
+    const result = await editFolderService(folderId, req.body)
+
+    if (result >= 1){
+      res.send(response(status.SUCCESS))
+    }
+    
+    else{
+      throw new BaseError(status.BAD_REQUEST)
+    }
+  } catch (err){
+    console.log('폴더 정보 수정 오류')
+    res.send(response(status.BAD_REQUEST))
   }
 }
