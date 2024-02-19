@@ -58,8 +58,9 @@ export const editArchiveController = async (req, res, next) => {
   const { archiveId } = req.params
   try {
     const result = await editArchive(archiveId, req.body)
+    
     console.log('아카이브 글 수정 성공')
-    res.status(201).json(response(status.SUCCESS, { archiveId }))
+    res.status(201).json(response(status.SUCCESS, {"archiveId": result}))
   } catch (error) {
     console.error('Error in editArchiveController:', error)
     res.send(response(status.BAD_REQUEST, null))

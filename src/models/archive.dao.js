@@ -181,7 +181,7 @@ export const editArchive = async (archiveId, req) => {
       req.price,
       req.visitedDate,
       req.isPublic,
-      parseInt(archiveId),
+      archiveId,
     ])
 
     // 기존 해시태그 및 이미지 정보 삭제
@@ -212,7 +212,7 @@ export const editArchive = async (archiveId, req) => {
     await conn.commit()
 
     conn.release()
-    return archiveId
+    return parseInt(archiveId)
   } catch (error) {
     console.log(error)
     throw new BaseError(status.PARAMETER_IS_WRONG)
