@@ -25,11 +25,13 @@ import {
   deleteArchiveFolderByFolderId,
   deleteUserFolderByFolderId,
   deleteFolder,
+  isUserOwnFolder,
   selectArchiveFolder,
   selectAllArchiveList,
   selectHashtagIdByHashtagName,
   selectArchiveListWithHashtag,
   updateFolder,
+  updateArchiveFolder,
 } from './archive.sql'
 import { selectUser } from './user.sql'
 import {
@@ -159,7 +161,7 @@ export const removeArchive = async (archiveId) => {
   }
 }
 
-export const editArchive = async (archiveId, req) => {
+export const editArchive = async (userId, archiveId, req) => {
   const conn = await pool.getConnection()
 
   try {
@@ -172,7 +174,15 @@ export const editArchive = async (archiveId, req) => {
       throw new BaseError(status.PARAMETER_IS_WRONG)
     }
 
-    console.log(archive)
+    // 아카이브가 속한 폴더 위치 변경
+    // 유저가 바꿀 폴더를 소유하고 있는 지 확인
+    const isUserHavingFolder = await conn.query(isUserOwnFolder, [userId, req.folder])
+    if (isUserHavingFolder[0].length === 0){
+      throw new BaseError(status.USER_DOESNT_OWN_FOLDER)
+    }
+
+    const [folderInfo] = await conn.query(selectArchiveFolder, archiveId)
+
     await conn.query(updateArchive, [
       req.title,
       req.comment,
@@ -183,6 +193,13 @@ export const editArchive = async (archiveId, req) => {
       req.isPublic,
       archiveId,
     ])
+
+    await conn.query(updateArchiveFolder, [
+      req.folder,
+      archiveId,
+      folderInfo[0].id
+    ])
+ 
 
     // 기존 해시태그 및 이미지 정보 삭제
     await conn.query(deleteArchiveHashtag, [archiveId])
