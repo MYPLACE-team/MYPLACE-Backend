@@ -172,6 +172,7 @@ export const editArchive = async (archiveId, req) => {
       throw new BaseError(status.PARAMETER_IS_WRONG)
     }
 
+    console.log(archive)
     await conn.query(updateArchive, [
       req.title,
       req.comment,
@@ -180,7 +181,7 @@ export const editArchive = async (archiveId, req) => {
       req.price,
       req.visitedDate,
       req.isPublic,
-      archiveId,
+      parseInt(archiveId),
     ])
 
     // 기존 해시태그 및 이미지 정보 삭제
