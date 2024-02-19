@@ -56,8 +56,9 @@ export const removeArchiveController = async (req, res, next) => {
 // 아카이브 글 수정
 export const editArchiveController = async (req, res, next) => {
   const { archiveId } = req.params
+  const userId = 1
   try {
-    const result = await editArchive(archiveId, req.body)
+    const result = await editArchive(userId, archiveId, req.body)
     
     console.log('아카이브 글 수정 성공')
     res.status(201).json(response(status.SUCCESS, {"archiveId": result}))

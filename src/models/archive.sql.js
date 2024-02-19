@@ -66,8 +66,13 @@ export const deleteFolder = `
 export const updateArchive = `
     UPDATE archive SET title = ?, comment = ?, score = ?, menu = ?, cost = ?, visited_date = ?, is_public = ? WHERE id = ?`
 
+// 폴더 정보 수정
 export const updateFolder = `
     UPDATE folder SET name = ?, date_start = ?, date_end = ?, thumbnail_img = ? WHERE id = ?`
+
+// 아카이브-폴더 정보 수정
+export const updateArchiveFolder = `
+    UPDATE archive_folder SET folder_id = ? WHERE archive_id = ? AND folder_id = ?`
 
 // 조회
 // 아카이브 글 상세 조회
@@ -102,6 +107,13 @@ export const selectArchive = `
 
 export const selectFolder = `
     SELECT * FROM folder WHERE id = ?`
+
+// 유저-폴더 소유 여부 조회
+export const isUserOwnFolder = `
+    SELECT id
+    FROM user_folder
+    WHERE user_id = ?
+    AND folder_id = ?`
 
 // 유저의 폴더 정보 조회
 export const selectUserFolder = `
