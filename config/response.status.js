@@ -73,6 +73,12 @@ export const status = {
     code: 'ARCHIVE2000',
     message: '폴더가 성공적으로 삭제되었습니다'
   },
+  ARCHIVE_LIST_DOESNT_EXIST: {
+    status: 404,
+    isSuccess: false,
+    code: 'ARCHIVE4000',
+    message: '아카이브 리스트가 존재하지 않습니다'
+  },
   //user
   USER_NOT_EXISTS: {
     status: 404,
