@@ -118,6 +118,6 @@ export const showArchiveListController = async(req, res) => {
     res.send(response(status.SHOW_ARCHIVE_LIST_SUCCESS, result))
   } catch (err){
     console.error('Error in showArchiveListController', err)
-    res.send(response(status.BAD_REQUEST, null))
+    res.send(response(status.ARCHIVE_LIST_DOESNT_EXIST, []))
   }
 }
