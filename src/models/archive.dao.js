@@ -313,6 +313,12 @@ export const removeFolder = async (folderId) => {
   const conn = await pool.getConnection()
 
   try {
+    const [isExist] = await conn.query(selectFolder, folderId)
+
+    if (isExist.length === 0){
+      throw new BaseError(status.PARAMETER_IS_WRONG)
+    }
+
     await conn.query(deleteArchiveFolderByFolderId, folderId)
     await conn.query(deleteUserFolderByFolderId, folderId)
     const result = await conn.query(deleteFolder, folderId)

@@ -89,7 +89,7 @@ export const showArchiveUserController = async (req, res, next) => {
     res.status(200).json(response(status.SUCCESS, result))
   } catch (error) {
     console.error('Error in showArchiveUserController:', error)
-    res.send(response(status.BAD_REQUEST, null))
+    res.send(response(status.BAD_REQUEST))
   }
 }
 
@@ -99,10 +99,10 @@ export const removeFolderController = async (req, res, next) => {
   try{
     const result = await removeFolderService(folderId)
     console.log('폴더 삭제 성공')
-    res.send(response(status.REMOVE_FOLDER_SUCCESS, null))
+    res.send(response(status.REMOVE_FOLDER_SUCCESS))
   } catch (err){
     console.log('Error in removeFolderController', err)
-    res.send(response(status.BAD_REQUEST, null))
+    res.send(response(status.BAD_REQUEST))
   }
 }
 
