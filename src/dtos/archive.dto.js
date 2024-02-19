@@ -11,6 +11,7 @@ export const loginResponseDTO = (user, access_token) => {
 }
 
 export const showArchiveDetailDTO = (archive, place, hashtags) => {
+  console.log(archive)
   return {
     place: {
       placeId: place.id,
@@ -33,8 +34,8 @@ export const showArchiveDetailDTO = (archive, place, hashtags) => {
       hashtag: hashtags,
       visitedDate: archive.visite,
       isPublic: archive.isPublic,
-      folderId: archive.folder.id,
-      folderName: archive.folder.name
+      folderId: archive.folder !== undefined ? archive.folder.id : null,
+      folderName: archive.folder !== undefined ? archive.folder.name : null
     },
   }
 }

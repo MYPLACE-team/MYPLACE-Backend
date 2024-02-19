@@ -241,6 +241,7 @@ export const showArchiveDetail = async (archiveId) => {
     const folderResult = await conn.query(selectArchiveFolder, archiveId)
     const folder = folderResult[0][0]
 
+
     const archive = {
       id: archiveData.id,
       title: archiveData.title,
