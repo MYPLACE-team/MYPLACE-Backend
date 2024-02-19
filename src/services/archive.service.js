@@ -15,6 +15,7 @@ export const addArchiveFolderService = async (req) => {
     return result
   } catch (err) {
     console.error(err)
+    throw new BaseError(status.PARAMETER_IS_WRONG)
   }
 }
 

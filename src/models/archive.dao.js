@@ -49,9 +49,7 @@ export const addArchiveFolder = async (req) => {
       req.end,
     ])
 
-    console.log(insertFolderResult)
     const folderId = insertFolderResult.insertId
-    console.log(folderId)
 
     const userFolderResult = await conn.query(insertUserFolder, [
       userId,
@@ -59,6 +57,7 @@ export const addArchiveFolder = async (req) => {
     ])
 
     console.log(userFolderResult)
+    console.log(folderId)
 
     return folderId
   } catch (err) {
