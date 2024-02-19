@@ -79,6 +79,12 @@ export const status = {
     code: 'ARCHIVE4000',
     message: '아카이브 리스트가 존재하지 않습니다'
   },
+  USER_DOESNT_OWN_FOLDER: {
+    status: 404,
+    isSuccess: false,
+    code: 'ARCHIVE4001',
+    message: '유저가 접근할 수 없는 폴더입니다'
+  },
   //user
   USER_NOT_EXISTS: {
     status: 404,
