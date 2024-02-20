@@ -21,7 +21,12 @@ export const userEditProfileController = async (req, res) => {
     console.log('Edit user Info : ', req.params.userId)
     const result = await userEditProfileService(req)
     if (result == -2) {
-      return res.send(response(status.NAME_ALREADY_EXISTS, req.body.username))
+      return res.send(
+        response(
+          status.NAME_ALREADY_EXISTS,
+          await userGetInfoProvide(req.params.userId),
+        ),
+      )
     }
     return res.send(response(status.SUCCESS, result))
   } catch (err) {
