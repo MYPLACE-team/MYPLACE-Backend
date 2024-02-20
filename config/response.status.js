@@ -1,6 +1,6 @@
 export const status = {
   // success
-  SUCCESS: { status: 200, isSuccess: true, code: 2000, message: '성공!!' },
+  SUCCESS: { status: 200, isSuccess: true, code: '2000', message: '성공!!' },
 
   //공통
   PARAMETER_IS_WRONG: {
@@ -71,19 +71,19 @@ export const status = {
     status: 200,
     isSuccess: true,
     code: 'ARCHIVE2000',
-    message: '폴더가 성공적으로 삭제되었습니다'
+    message: '폴더가 성공적으로 삭제되었습니다',
   },
   ARCHIVE_LIST_DOESNT_EXIST: {
     status: 404,
     isSuccess: false,
     code: 'ARCHIVE4000',
-    message: '아카이브 리스트가 존재하지 않습니다'
+    message: '아카이브 리스트가 존재하지 않습니다',
   },
   USER_DOESNT_OWN_FOLDER: {
     status: 404,
     isSuccess: false,
     code: 'ARCHIVE4001',
-    message: '유저가 접근할 수 없는 폴더입니다'
+    message: '유저가 접근할 수 없는 폴더입니다',
   },
   //user
   USER_NOT_EXISTS: {
