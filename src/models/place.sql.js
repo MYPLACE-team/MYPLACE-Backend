@@ -33,6 +33,7 @@ export const selectAllPlace = `
         place.category_id,
         place.lat,
         place.lon,
+        place.thumbnail_url,
         user_place.is_visited
   FROM user_place 
   JOIN place ON user_place.place_id = place.id 
