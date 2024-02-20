@@ -12,6 +12,13 @@ const app = express()
 const port = 3000
 app.use(express.json())
 app.use(cors())
+//임시 메소드, 엔드포인트, req.body확인용
+app.use((req, res, next) => {
+  console.log('API!!!!', req.method, '>>', req.url)
+  console.log(req.body)
+  next()
+}) //임시 끝
+
 app.use('/auth', authRouter)
 app.use('/place', placeRouter)
 app.use('/archive', archiveRouter)
