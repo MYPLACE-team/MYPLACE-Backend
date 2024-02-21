@@ -114,7 +114,8 @@ export const searchPlaceController = async (req, res) => {
 
     const totalNum = placeList.length
     const hasNext = totalNum > 10 * page ? true : false
-    const currentPages = placeList.slice(10 * (page - 1), 30 * page)
+    // const currentPages = placeList.slice(10 * (page - 1), 30 * page)
+    const currentPages = placeList
 
     const result = {
       totalNum,
