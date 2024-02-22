@@ -11,8 +11,10 @@ module.exports = {
       error: 'logs/pm2/myplace.error.log',
       //merge_logs: true,
       autorestart: true,
+      ignore_watch: ['node_modules'],
       watch: true,
       // max_memory_restart: "512M",
+      time: true,
     },
   ],
 }

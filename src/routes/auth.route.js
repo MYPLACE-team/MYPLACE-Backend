@@ -1,5 +1,5 @@
 import express from 'express'
-import { authLogin, authJWT } from '../controllers/auth.controller'
+import { authLogin, authJWT, authGoogleRedirectTest } from '../controllers/auth.controller'
 import {
   imageUploader,
   profileUpload,
@@ -8,7 +8,7 @@ import {
 
 export const authRouter = express.Router({ mergeParams: true })
 
-//authRouter.get('/', authGoogleRedirectTest)
+authRouter.get('/', authGoogleRedirectTest)//임시
 authRouter.post('/login', authLogin)
 authRouter.get('/login', authJWT) //임시
 

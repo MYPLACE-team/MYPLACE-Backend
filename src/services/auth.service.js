@@ -8,7 +8,7 @@ import {
   addOauth,
 } from '../models/auth.dao'
 import Axios from 'axios'
-import { tokenSign } from '../middlewares/jwt.middleware'
+import { tokenSign, tokenRefreshSign } from '../middlewares/jwt.middleware'
 
 //카카오 소셜로그인
 export const kakaoLogin = async (headers, body) => {
@@ -41,7 +41,8 @@ export const kakaoLogin = async (headers, body) => {
 
   const user = await getUserByEmail(email)
   if (user == -1) {
-    await addUser(username, email, profileImage, provider, kakaoId)
+    const refresh = await tokenRefreshSign()
+    await addUser(username, email, profileImage, provider, kakaoId, refresh)
     const new_user = await getUserByEmail(email)
     return loginResponseDTO(new_user, await tokenSign(new_user[0]))
   } else {
@@ -49,7 +50,11 @@ export const kakaoLogin = async (headers, body) => {
     if (oauth == -1) {
       await addOauth(user[0].id, kakaoId, provider)
     }
-    return loginResponseDTO(user, await tokenSign(user[0]))
+    return loginResponseDTO(
+      user,
+      await tokenSign(user[0]),
+      oauth[0].access_token,
+    )
   }
 }
 
