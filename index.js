@@ -7,6 +7,7 @@ import { authRouter } from './src/routes/auth.route'
 import { placeRouter } from './src/routes/place.route'
 import { archiveRouter } from './src/routes/archive.route'
 import { userRouter } from './src/routes/user.route'
+import { complainRouter } from './src/routes/complain.route'
 
 const app = express()
 const port = 3000
@@ -23,6 +24,7 @@ app.use('/auth', authRouter)
 app.use('/place', placeRouter)
 app.use('/archive', archiveRouter)
 app.use('/user', userRouter)
+app.use('/complain', complainRouter)
 app.use('/output', (req, res) => {
   res.sendFile(__dirname + '/logs/pm2/myplace.ouput-0.log')
 })
